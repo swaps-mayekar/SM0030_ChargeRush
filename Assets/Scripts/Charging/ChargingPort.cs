@@ -28,8 +28,12 @@ namespace ChargeRush.Charging
 
             if (portRenderer != null)
             {
-                portRenderer.sprite = sprite;
-                portRenderer.color = DeviceInstance.ConnectorColor(type);
+                if (sprite != null)
+                {
+                    portRenderer.sprite = sprite;
+                }
+
+                portRenderer.color = Color.white;
             }
         }
 

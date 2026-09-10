@@ -19,4 +19,4 @@ MonoBehaviour:
   paymentMultiplier: 1.1
   maxDevices: 2
   tintColor: {r: 0.75, g: 0.65, b: 0.95, a: 1}
-  portraitSprite: {fileID: 4406983332565127366, guid: 7c987664237c04560bcac00eb9b47a37, type: 3}
+  portraitSprite: {fileID: 21300000, guid: 12f5e7659161649a284c63e20e61cd73, type: 3}

@@ -39,6 +39,7 @@ namespace ChargeRush.Data
         [SerializeField] private float chargingSpeedMultiplier = 1f;
         [SerializeField] private bool isTutorial;
         [SerializeField] private Color backgroundTint = new Color(0.55f, 0.78f, 0.95f);
+        [SerializeField] private Sprite backgroundSprite;
         [SerializeField] private List<WeightedDeviceEntry> availableDevices = new List<WeightedDeviceEntry>();
         [SerializeField] private List<WeightedCustomerEntry> availableCustomers = new List<WeightedCustomerEntry>();
 
@@ -59,6 +60,7 @@ namespace ChargeRush.Data
         public float ChargingSpeedMultiplier => chargingSpeedMultiplier;
         public bool IsTutorial => isTutorial;
         public Color BackgroundTint => backgroundTint;
+        public Sprite BackgroundSprite => backgroundSprite;
         public IReadOnlyList<WeightedDeviceEntry> AvailableDevices => availableDevices;
         public IReadOnlyList<WeightedCustomerEntry> AvailableCustomers => availableCustomers;
 
@@ -102,6 +104,11 @@ namespace ChargeRush.Data
         {
             availableDevices = devices ?? new List<WeightedDeviceEntry>();
             availableCustomers = customers ?? new List<WeightedCustomerEntry>();
+        }
+
+        public void AssignBackground(Sprite sprite)
+        {
+            backgroundSprite = sprite;
         }
 
         public int EvaluateStars(int earnings, int mistakes, bool customerLeft)

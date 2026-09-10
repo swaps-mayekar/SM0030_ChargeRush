@@ -29,6 +29,7 @@ MonoBehaviour:
   chargingSpeedMultiplier: 1
   isTutorial: 0
   backgroundTint: {r: 0.95, g: 0.75, b: 0.55, a: 1}
+  backgroundSprite: {fileID: 21300000, guid: 6dd416d566a49486683ed5a3cea3f3fd, type: 3}
   availableDevices:
   - Device: {fileID: 11400000, guid: bb1878b314ee147c0ab5a40247104647, type: 2}
     Weight: 1

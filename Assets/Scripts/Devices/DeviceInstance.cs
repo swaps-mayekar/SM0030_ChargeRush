@@ -212,14 +212,16 @@ namespace ChargeRush.Devices
                 return;
             }
 
-            spriteRenderer.color = Data.TintColor;
-            if (State == DeviceState.Charging && Data.ChargingSprite != null)
-            {
-                spriteRenderer.sprite = Data.ChargingSprite;
-            }
-            else if (State == DeviceState.FullyCharged && Data.FullyChargedSprite != null)
+            // Keep production art readable; apply a light tint only.
+            spriteRenderer.color = Color.Lerp(Color.white, Data.TintColor, 0.18f);
+            if (State == DeviceState.FullyCharged && Data.FullyChargedSprite != null)
             {
                 spriteRenderer.sprite = Data.FullyChargedSprite;
+                spriteRenderer.color = Color.white;
+            }
+            else if (State == DeviceState.Charging && Data.ChargingSprite != null)
+            {
+                spriteRenderer.sprite = Data.ChargingSprite;
             }
             else if (Data.IdleSprite != null)
             {
@@ -228,7 +230,13 @@ namespace ChargeRush.Devices
 
             if (connectorBadge != null)
             {
-                connectorBadge.color = ConnectorColor(Data.RequiredConnector);
+                var badge = ResolveConnectorBadge(Data.RequiredConnector);
+                if (badge != null)
+                {
+                    connectorBadge.sprite = badge;
+                }
+
+                connectorBadge.color = Color.white;
             }
         }
 
@@ -242,6 +250,21 @@ namespace ChargeRush.Devices
                 case ConnectorType.ProPower: return new Color(0.85f, 0.35f, 0.95f);
                 default: return new Color(0.9f, 0.9f, 0.9f);
             }
+        }
+
+        private static Sprite ResolveConnectorBadge(ConnectorType type)
+        {
+            string path;
+            switch (type)
+            {
+                case ConnectorType.PowerLinkA: path = "Art/Connectors/badge_powerlink_a"; break;
+                case ConnectorType.PowerLinkB: path = "Art/Connectors/badge_powerlink_b"; break;
+                case ConnectorType.MiniPower: path = "Art/Connectors/badge_minipower"; break;
+                case ConnectorType.ProPower: path = "Art/Connectors/badge_propower"; break;
+                default: path = "Art/Connectors/badge_universal"; break;
+            }
+
+            return Resources.Load<Sprite>(path);
         }
     }
 }

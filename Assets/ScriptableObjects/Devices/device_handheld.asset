@@ -20,6 +20,6 @@ MonoBehaviour:
   chargingDurationSeconds: 9
   servicePrice: 50
   tintColor: {r: 0.75, g: 0.35, b: 0.45, a: 1}
-  idleSprite: {fileID: 8830183418873564316, guid: 7496f378ec4eb4058b1fcdded3e7d999, type: 3}
-  chargingSprite: {fileID: 8830183418873564316, guid: 7496f378ec4eb4058b1fcdded3e7d999, type: 3}
-  fullyChargedSprite: {fileID: 2653802176405700307, guid: 353c058fb4bf14ce5a10e3b1380ac29d, type: 3}
+  idleSprite: {fileID: 21300000, guid: 9f1312e1c489a47b8bcbca167969b0ac, type: 3}
+  chargingSprite: {fileID: 21300000, guid: 9f1312e1c489a47b8bcbca167969b0ac, type: 3}
+  fullyChargedSprite: {fileID: 21300000, guid: 84853249a00744f85aa5e7701a772a76, type: 3}

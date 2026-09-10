@@ -206,13 +206,28 @@ namespace ChargeRush.Gameplay
 
             if (backgroundRenderer != null)
             {
-                backgroundRenderer.color = level.BackgroundTint;
+                if (level.BackgroundSprite != null)
+                {
+                    backgroundRenderer.sprite = level.BackgroundSprite;
+                    backgroundRenderer.color = Color.white;
+                    backgroundRenderer.drawMode = SpriteDrawMode.Simple;
+                    FitBackground(backgroundRenderer);
+                }
+                else
+                {
+                    backgroundRenderer.color = level.BackgroundTint;
+                }
             }
 
             var connectors = CollectConnectors(level);
             var ports = level.ChargingPortCount + (upgrades != null ? upgrades.GetExtraPorts() : 0);
             ports = Mathf.Clamp(ports, 1, 6);
-            chargingStation.EnsurePortCount(ports, portPrefab, chargingStation.transform, connectors, null);
+            var portSprite = Resources.Load<Sprite>("Art/Environment/port_base");
+            if (portSprite == null)
+            {
+                // Fallback for editor-assigned prefab art.
+            }
+            chargingStation.EnsurePortCount(ports, portPrefab, chargingStation.transform, connectors, portSprite);
 
             var queueSize = level.MaximumVisibleQueue + (upgrades != null ? upgrades.GetExtraQueueSlots() : 0);
             customerQueue.Configure(Mathf.Clamp(queueSize, 1, 6));
@@ -615,6 +630,32 @@ namespace ChargeRush.Gameplay
             {
                 tutorial.NotifyDevicePickedFromCustomer();
             }
+        }
+
+        private static void FitBackground(SpriteRenderer renderer)
+        {
+            if (renderer == null || renderer.sprite == null)
+            {
+                return;
+            }
+
+            var cam = Camera.main;
+            if (cam == null || !cam.orthographic)
+            {
+                renderer.transform.localScale = new Vector3(18f, 10f, 1f);
+                return;
+            }
+
+            var height = cam.orthographicSize * 2f;
+            var width = height * cam.aspect;
+            var spriteSize = renderer.sprite.bounds.size;
+            if (spriteSize.x <= 0.01f || spriteSize.y <= 0.01f)
+            {
+                return;
+            }
+
+            renderer.transform.localScale = new Vector3(width / spriteSize.x, height / spriteSize.y, 1f);
+            renderer.transform.position = new Vector3(cam.transform.position.x, cam.transform.position.y, 0f);
         }
     }
 }

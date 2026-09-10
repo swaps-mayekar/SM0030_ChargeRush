@@ -51,6 +51,11 @@ namespace ChargeRush.Editor
             ConfigureProjectSettings();
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+            if (File.Exists("Assets/Art/Characters/customer_regular.png"))
+            {
+                ChargeRushArtIntegrator.ApplyFinalArt();
+            }
+
             Debug.Log("ChargeRush content build complete.");
         }
 
@@ -189,6 +194,17 @@ namespace ChargeRush.Editor
 
         private static Sprite CreateSprite(string path, int width, int height, Color color, SpritePainter painter)
         {
+            // Preserve production art if a larger authored file already exists.
+            if (File.Exists(path))
+            {
+                var info = new FileInfo(path);
+                if (info.Length > 2048)
+                {
+                    AssetDatabase.ImportAsset(path);
+                    return AssetDatabase.LoadAssetAtPath<Sprite>(path);
+                }
+            }
+
             var pixels = new Color[width * height];
             for (var i = 0; i < pixels.Length; i++)
             {

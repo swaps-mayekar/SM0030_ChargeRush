@@ -235,7 +235,7 @@ namespace ChargeRush.Customers
                 return;
             }
 
-            spriteRenderer.color = Data.TintColor;
+            spriteRenderer.color = Color.white;
             if (Data.PortraitSprite != null)
             {
                 spriteRenderer.sprite = Data.PortraitSprite;
