@@ -1,4 +1,6 @@
+using ChargeRush.Customers;
 using ChargeRush.Data;
+using ChargeRush.Devices;
 using ChargeRush.Economy;
 using ChargeRush.Save;
 using ChargeRush.Tutorial;
@@ -145,6 +147,33 @@ namespace ChargeRush.Tests
             Assert.IsTrue(tutorial.CanDragDevice(null));
 
             Object.DestroyImmediate(go);
+        }
+
+        [Test]
+        public void ReturnedDevice_FollowsCustomerAndCustomerKeepsLeavingState()
+        {
+            var customerObject = new GameObject("Customer");
+            var customer = customerObject.AddComponent<CustomerInstance>();
+            var deviceObject = new GameObject("Device");
+            var device = deviceObject.AddComponent<DeviceInstance>();
+            var data = ScriptableObject.CreateInstance<DeviceData>();
+            data.Configure("phone", "Phone", DeviceCategory.BasicSmartphone, ConnectorType.PowerLinkA, 100, 1f, 20, Color.white);
+
+            device.Initialize(data, "owner", "device");
+            customer.Initialize(null, "owner", device, 10f);
+            customer.TakeDeviceFromCustomer();
+            device.CompleteCharge();
+
+            Assert.IsTrue(customer.AcceptDevice(device));
+            Assert.AreSame(customer.transform, device.transform.parent);
+
+            customer.NotifyPayment(20);
+            customer.BeginLeave();
+            Assert.AreEqual(CustomerState.Leaving, customer.State);
+
+            Object.DestroyImmediate(deviceObject);
+            Object.DestroyImmediate(customerObject);
+            Object.DestroyImmediate(data);
         }
     }
 }

@@ -162,6 +162,8 @@ namespace ChargeRush.Customers
             }
 
             ServicedDevice = device;
+            device.SetHome(DeviceAnchor, DeviceAnchor.position);
+            device.transform.position = DeviceAnchor.position;
             device.SetState(DeviceState.ReturningToCustomer);
             SetState(CustomerState.ReceivingDevice);
             return true;

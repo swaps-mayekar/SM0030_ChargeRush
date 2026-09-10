@@ -71,6 +71,12 @@ namespace ChargeRush.Devices
             if (progressFill != null)
             {
                 progressFill.localScale = new Vector3(0f, 1f, 1f);
+                progressFill.gameObject.SetActive(false);
+            }
+
+            if (connectorBadge != null)
+            {
+                connectorBadge.gameObject.SetActive(false);
             }
         }
 
@@ -238,8 +244,14 @@ namespace ChargeRush.Devices
                 box.size = spriteRenderer.sprite.bounds.size * 0.85f;
             }
 
+            if (progressFill != null)
+            {
+                progressFill.gameObject.SetActive(State == DeviceState.Charging || State == DeviceState.FullyCharged);
+            }
+
             if (connectorBadge != null)
             {
+                connectorBadge.gameObject.SetActive(State != DeviceState.Completed && State != DeviceState.Inactive);
                 var badge = ResolveConnectorBadge(Data.RequiredConnector);
                 if (badge != null)
                 {

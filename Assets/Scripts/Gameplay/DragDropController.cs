@@ -212,7 +212,6 @@ namespace ChargeRush.Gameplay
                 ? economy.ApplyPayment(device.Data.ServicePrice, customer.Data.PaymentMultiplier)
                 : device.Data.ServicePrice;
             device.SetState(DeviceState.Completed);
-            customer.BeginLeave();
             if (tutorial != null)
             {
                 tutorial.NotifyDeviceReturned(device);
@@ -221,6 +220,13 @@ namespace ChargeRush.Gameplay
             // Emit payment after the tutorial enters CollectPayment so the same
             // transaction can complete that step instead of leaving input locked.
             customer.NotifyPayment(payment);
+            customer.BeginLeave();
+            if (customerQueue != null)
+            {
+                // Free the service slot immediately; the departing customer
+                // remains active only long enough to finish moving off-screen.
+                customerQueue.Remove(customer);
+            }
         }
 
         private DeviceInstance FindDevice(Vector2 screenPosition)
