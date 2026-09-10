@@ -280,7 +280,7 @@ namespace ChargeRush.Editor
 
         private static void UpdateGameplayScene()
         {
-            var scene = EditorSceneManager.OpenScene("Assets/Scenes/Gameplay.unity");
+            var scene = EditorSceneManager.OpenScene("Assets/Scenes/3_Gameplay.unity");
             var bg = GameObject.Find("Background");
             if (bg != null)
             {
@@ -314,13 +314,17 @@ namespace ChargeRush.Editor
 
         private static void UpdateMainMenuScene()
         {
-            var scene = EditorSceneManager.OpenScene("Assets/Scenes/MainMenu.unity");
+            var scene = EditorSceneManager.OpenScene("Assets/Scenes/1_MainMenu.unity");
             var canvas = Object.FindFirstObjectByType<Canvas>();
             if (canvas == null)
             {
                 EditorSceneManager.SaveScene(scene);
                 return;
             }
+
+            canvas.additionalShaderChannels = AdditionalCanvasShaderChannels.TexCoord1
+                | AdditionalCanvasShaderChannels.Normal
+                | AdditionalCanvasShaderChannels.Tangent;
 
             var safe = canvas.transform.Find("SafeArea");
             if (safe == null)
@@ -329,8 +333,8 @@ namespace ChargeRush.Editor
                 return;
             }
 
-            EnsureImage(safe, "MenuBackground", LoadSprite($"{ArtRoot}/Environment/bg_menu.png"), new Vector2(0f, 0f), new Vector2(1920f, 1080f), -100);
-            EnsureImage(safe, "Logo", LoadSprite($"{ArtRoot}/UI/logo_chargerush.png"), new Vector2(0f, 280f), new Vector2(720f, 220f), 0);
+            EnsureImage(safe, "MenuBackground", LoadSprite($"{ArtRoot}/Environment/bg_menu.png"), new Vector2(0f, 0f), new Vector2(1920f, 1080f), 0, false);
+            EnsureImage(safe, "Logo", LoadSprite($"{ArtRoot}/UI/logo_chargerush.png"), new Vector2(0f, 280f), new Vector2(720f, 220f), 1);
 
             StyleButton(safe.Find("Play"), LoadSprite($"{ArtRoot}/UI/button_primary.png"));
             StyleButton(safe.Find("LevelSelect"), LoadSprite($"{ArtRoot}/UI/button_primary.png"));
@@ -352,7 +356,7 @@ namespace ChargeRush.Editor
 
         private static void UpdateHudChrome()
         {
-            var scene = EditorSceneManager.OpenScene("Assets/Scenes/Gameplay.unity");
+            var scene = EditorSceneManager.OpenScene("Assets/Scenes/3_Gameplay.unity");
             var canvas = Object.FindFirstObjectByType<Canvas>();
             if (canvas == null)
             {
@@ -420,7 +424,7 @@ namespace ChargeRush.Editor
             }
         }
 
-        private static void EnsureImage(Transform parent, string name, Sprite sprite, Vector2 pos, Vector2 size, int siblingIndex)
+        private static void EnsureImage(Transform parent, string name, Sprite sprite, Vector2 pos, Vector2 size, int siblingIndex, bool raycastTarget = true)
         {
             if (parent == null || sprite == null)
             {
@@ -450,10 +454,8 @@ namespace ChargeRush.Editor
             image.sprite = sprite;
             image.preserveAspect = true;
             image.color = Color.white;
-            if (siblingIndex >= 0)
-            {
-                go.transform.SetSiblingIndex(Mathf.Clamp(siblingIndex, 0, parent.childCount - 1));
-            }
+            image.raycastTarget = raycastTarget;
+            go.transform.SetSiblingIndex(Mathf.Clamp(siblingIndex, 0, parent.childCount - 1));
         }
 
         private static Sprite LoadSprite(string path)

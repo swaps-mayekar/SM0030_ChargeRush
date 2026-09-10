@@ -674,7 +674,7 @@ namespace ChargeRush.Editor
             var so = new SerializedObject(bootstrap.GetComponent<GameBootstrap>());
             so.FindProperty("catalog").objectReferenceValue = catalog;
             so.ApplyModifiedPropertiesWithoutUndo();
-            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/Boot.unity");
+            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/0_Boot.unity");
         }
 
         private static void BuildMenuScene(GameCatalog catalog)
@@ -714,7 +714,7 @@ namespace ChargeRush.Editor
             so.FindProperty("upgradesContent").objectReferenceValue = upgradesContent.transform;
             so.FindProperty("closeUpgradesButton").objectReferenceValue = closeUpgrades;
             so.ApplyModifiedPropertiesWithoutUndo();
-            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/MainMenu.unity");
+            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/1_MainMenu.unity");
         }
 
         private static void BuildLevelSelectScene()
@@ -735,7 +735,7 @@ namespace ChargeRush.Editor
             so.FindProperty("contentRoot").objectReferenceValue = content.transform;
             so.FindProperty("backButton").objectReferenceValue = back;
             so.ApplyModifiedPropertiesWithoutUndo();
-            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/LevelSelect.unity");
+            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/2_LevelSelect.unity");
         }
 
         private static void BuildAchievementsScene()
@@ -754,7 +754,7 @@ namespace ChargeRush.Editor
             so.FindProperty("contentRoot").objectReferenceValue = content.transform;
             so.FindProperty("backButton").objectReferenceValue = back;
             so.ApplyModifiedPropertiesWithoutUndo();
-            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/Achievements.unity");
+            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/4_Achievements.unity");
         }
 
         private static void BuildSettingsScene()
@@ -781,7 +781,7 @@ namespace ChargeRush.Editor
             so.FindProperty("backButton").objectReferenceValue = back;
             so.FindProperty("resetButton").objectReferenceValue = reset;
             so.ApplyModifiedPropertiesWithoutUndo();
-            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/Settings.unity");
+            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/5_Settings.unity");
         }
 
         private static void BuildGameplayScene(GameCatalog catalog, PrefabSet prefabs, Dictionary<string, Sprite> sprites)
@@ -899,19 +899,19 @@ namespace ChargeRush.Editor
             tutorialSo.FindProperty("highlightArrow").objectReferenceValue = arrow;
             tutorialSo.ApplyModifiedPropertiesWithoutUndo();
 
-            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/Gameplay.unity");
+            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/3_Gameplay.unity");
         }
 
         private static void ConfigureBuildSettings()
         {
             var scenes = new[]
             {
-                $"{SceneRoot}/Boot.unity",
-                $"{SceneRoot}/MainMenu.unity",
-                $"{SceneRoot}/LevelSelect.unity",
-                $"{SceneRoot}/Gameplay.unity",
-                $"{SceneRoot}/Achievements.unity",
-                $"{SceneRoot}/Settings.unity"
+                $"{SceneRoot}/0_Boot.unity",
+                $"{SceneRoot}/1_MainMenu.unity",
+                $"{SceneRoot}/2_LevelSelect.unity",
+                $"{SceneRoot}/3_Gameplay.unity",
+                $"{SceneRoot}/4_Achievements.unity",
+                $"{SceneRoot}/5_Settings.unity"
             };
 
             var list = new EditorBuildSettingsScene[scenes.Length];

@@ -9,12 +9,12 @@ namespace ChargeRush.Core
     {
         public static SceneLoader Instance { get; private set; }
 
-        public const string BootScene = "Boot";
-        public const string MainMenuScene = "MainMenu";
-        public const string LevelSelectScene = "LevelSelect";
-        public const string GameplayScene = "Gameplay";
-        public const string AchievementsScene = "Achievements";
-        public const string SettingsScene = "Settings";
+        public const string BootScene = "0_Boot";
+        public const string MainMenuScene = "1_MainMenu";
+        public const string LevelSelectScene = "2_LevelSelect";
+        public const string GameplayScene = "3_Gameplay";
+        public const string AchievementsScene = "4_Achievements";
+        public const string SettingsScene = "5_Settings";
 
         private bool isLoading;
 
