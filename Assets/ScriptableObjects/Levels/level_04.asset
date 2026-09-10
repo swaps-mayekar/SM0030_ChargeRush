@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27931b4ff60de474daa3c93f0ed202c2, type: 3}
+  m_Name: level_04
+  m_EditorClassIdentifier: ChargeRush.Runtime::ChargeRush.Data.LevelData
+  levelId: level_04
+  levelNumber: 4
+  levelName: College Festival
+  eventName: College Festival
+  eventDescription: Tablets join the counter.
+  targetEarnings: 350
+  twoStarThreshold: 480
+  threeStarThreshold: 620
+  maximumMistakes: 3
+  customerSpawnIntervalSeconds: 6
+  spawnIntervalVariance: 1.5
+  maximumVisibleQueue: 3
+  chargingPortCount: 3
+  patienceMultiplier: 1.05
+  chargingSpeedMultiplier: 1
+  isTutorial: 0
+  backgroundTint: {r: 0.65, g: 0.7, b: 0.95, a: 1}
+  availableDevices:
+  - Device: {fileID: 11400000, guid: bb1878b314ee147c0ab5a40247104647, type: 2}
+    Weight: 0.8
+  - Device: {fileID: 11400000, guid: 27dcfc288626d42739c1d6e02649a0af, type: 2}
+    Weight: 0.8
+  - Device: {fileID: 11400000, guid: 60075a45f45a744df986a2abe6334d47, type: 2}
+    Weight: 0.7
+  availableCustomers:
+  - Customer: {fileID: 11400000, guid: 5ec3843c78af94546888fcf4286f3897, type: 2}
+    Weight: 1
+  - Customer: {fileID: 11400000, guid: 86e67cfc81b89455b896ce0f1cb8cf16, type: 2}
+    Weight: 0.5
+  - Customer: {fileID: 11400000, guid: b8a511d98b64c4984b4c298f9aac235e, type: 2}
+    Weight: 0.4

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04f8edeaf42d046a59ca31094b634089, type: 3}
+  m_Name: challenge_serve
+  m_EditorClassIdentifier: ChargeRush.Runtime::ChargeRush.Data.ChallengeData
+  challengeId: challenge_serve
+  displayName: Service Sprint
+  description: Serve many guests quickly.
+  objectiveType: 1
+  linkedLevel: {fileID: 11400000, guid: 21ef9f4c859964354a2f4a6b8c235944, type: 2}
+  targetValue: 12
+  timeLimitSeconds: 0

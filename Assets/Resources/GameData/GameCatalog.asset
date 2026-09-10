@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56155742057a8440eadf662c712ae554, type: 3}
+  m_Name: GameCatalog
+  m_EditorClassIdentifier: ChargeRush.Runtime::ChargeRush.Data.GameCatalog
+  devices:
+  - {fileID: 11400000, guid: bb1878b314ee147c0ab5a40247104647, type: 2}
+  - {fileID: 11400000, guid: 27dcfc288626d42739c1d6e02649a0af, type: 2}
+  - {fileID: 11400000, guid: 60075a45f45a744df986a2abe6334d47, type: 2}
+  - {fileID: 11400000, guid: bc58d6d8f4cfd4fc28b7d3ded122698a, type: 2}
+  - {fileID: 11400000, guid: 5772c6d7780c14fe1a7e555c70df71c2, type: 2}
+  - {fileID: 11400000, guid: 74261940fe071441ebc19101c28f2215, type: 2}
+  - {fileID: 11400000, guid: c7ef4c79877c2430680c378decf5c2a7, type: 2}
+  customers:
+  - {fileID: 11400000, guid: 5ec3843c78af94546888fcf4286f3897, type: 2}
+  - {fileID: 11400000, guid: b8a511d98b64c4984b4c298f9aac235e, type: 2}
+  - {fileID: 11400000, guid: 00d944cb4f7474d31a7e240eaac4cfcb, type: 2}
+  - {fileID: 11400000, guid: 86e67cfc81b89455b896ce0f1cb8cf16, type: 2}
+  - {fileID: 11400000, guid: d63b7e732670b45c4ba0103dcdfc462e, type: 2}
+  - {fileID: 11400000, guid: e1ee0dea00cfb443ea35a6056ec1b787, type: 2}
+  storyLevels:
+  - {fileID: 11400000, guid: e03fcd6844aa4453eba59c37340b43a3, type: 2}
+  - {fileID: 11400000, guid: 651e06f358dbe4149b1300d38700eb3e, type: 2}
+  - {fileID: 11400000, guid: 5393fe0cbae4c41158d9a47864bf725e, type: 2}
+  - {fileID: 11400000, guid: 21ef9f4c859964354a2f4a6b8c235944, type: 2}
+  - {fileID: 11400000, guid: 6b1be4395c8ba4be3956fd51180e4469, type: 2}
+  - {fileID: 11400000, guid: 7d71e59b12b0f47c99644176c8e28056, type: 2}
+  - {fileID: 11400000, guid: b5973f6d27ade4c14bd07782ef0e4258, type: 2}
+  - {fileID: 11400000, guid: 93aaf76b952bb4a4a990c6a8a3ed42b7, type: 2}
+  - {fileID: 11400000, guid: 4f56d329bd4f44fd5805f4449777332e, type: 2}
+  - {fileID: 11400000, guid: b7b878a7730234d00b9d108ad9e0be83, type: 2}
+  upgrades:
+  - {fileID: 11400000, guid: 02e7a9028160b45e4b8374c75a5d99ec, type: 2}
+  - {fileID: 11400000, guid: 3c043bae03547489b88852bbe7135eac, type: 2}
+  - {fileID: 11400000, guid: e9ee87c42de594b76baec802ee23fc9e, type: 2}
+  - {fileID: 11400000, guid: 45e68c18c355e48609e97bca5ada08c9, type: 2}
+  - {fileID: 11400000, guid: d5cbea1b344a84988a6f76617e69e0a5, type: 2}
+  - {fileID: 11400000, guid: 9b308487070874c47bc3aa0c8bb665c5, type: 2}
+  achievements:
+  - {fileID: 11400000, guid: 4af0bcef97c1549d5901807f1ad55d4d, type: 2}
+  - {fileID: 11400000, guid: f46bfe3ddaea2483d82cff3114c321e7, type: 2}
+  - {fileID: 11400000, guid: d4b585577680d4f9eb8752203f66d36a, type: 2}
+  - {fileID: 11400000, guid: 5f701b0686f95421bb974490d465c9e0, type: 2}
+  - {fileID: 11400000, guid: dd72d53dfc6c842719f06ad25809f6a8, type: 2}
+  - {fileID: 11400000, guid: 59edf7d74f1cf40cbb2456de82ef850f, type: 2}
+  - {fileID: 11400000, guid: 1d9b8c332ef1b41b2a0a6964fc30fb0f, type: 2}
+  - {fileID: 11400000, guid: 256eb97b1c19847e8813a96879160d28, type: 2}
+  - {fileID: 11400000, guid: b97ba15092679492d838334489630de7, type: 2}
+  - {fileID: 11400000, guid: 9faf099f22fb241559e3c05ccf7ade05, type: 2}
+  challenges:
+  - {fileID: 11400000, guid: 3072bd96230b24333be9767b7b3e4591, type: 2}
+  - {fileID: 11400000, guid: 6ff110c94b910437cb1a9a021a6bd024, type: 2}
+  - {fileID: 11400000, guid: 6b92ceac1a6ca4c358b0a188e988420b, type: 2}
+  - {fileID: 11400000, guid: ba7ca8ecfc4e6409d9fb0c76137268ff, type: 2}

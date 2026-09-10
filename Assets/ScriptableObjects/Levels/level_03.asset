@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27931b4ff60de474daa3c93f0ed202c2, type: 3}
+  m_Name: level_03
+  m_EditorClassIdentifier: ChargeRush.Runtime::ChargeRush.Data.LevelData
+  levelId: level_03
+  levelNumber: 3
+  levelName: Food Festival
+  eventName: Food Festival
+  eventDescription: Faster flow and a new connector.
+  targetEarnings: 280
+  twoStarThreshold: 380
+  threeStarThreshold: 500
+  maximumMistakes: 3
+  customerSpawnIntervalSeconds: 6.5
+  spawnIntervalVariance: 1.5
+  maximumVisibleQueue: 3
+  chargingPortCount: 3
+  patienceMultiplier: 1.1
+  chargingSpeedMultiplier: 1
+  isTutorial: 0
+  backgroundTint: {r: 0.95, g: 0.75, b: 0.55, a: 1}
+  availableDevices:
+  - Device: {fileID: 11400000, guid: bb1878b314ee147c0ab5a40247104647, type: 2}
+    Weight: 1
+  - Device: {fileID: 11400000, guid: 27dcfc288626d42739c1d6e02649a0af, type: 2}
+    Weight: 1
+  availableCustomers:
+  - Customer: {fileID: 11400000, guid: 5ec3843c78af94546888fcf4286f3897, type: 2}
+    Weight: 1
+  - Customer: {fileID: 11400000, guid: b8a511d98b64c4984b4c298f9aac235e, type: 2}
+    Weight: 0.5

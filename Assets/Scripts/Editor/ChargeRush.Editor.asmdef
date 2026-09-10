@@ -1,0 +1,21 @@
+{
+    "name": "ChargeRush.Editor",
+    "rootNamespace": "ChargeRush.Editor",
+    "references": [
+        "ChargeRush.Runtime",
+        "Unity.InputSystem",
+        "Unity.TextMeshPro",
+        "Unity.ugui"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

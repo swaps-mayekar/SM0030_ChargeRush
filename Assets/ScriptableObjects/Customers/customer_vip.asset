@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49559da93b02a4acabbb70e474406c16, type: 3}
+  m_Name: customer_vip
+  m_EditorClassIdentifier: ChargeRush.Runtime::ChargeRush.Data.CustomerData
+  customerId: customer_vip
+  displayName: Premium Guest
+  customerType: 5
+  basePatienceSeconds: 35
+  paymentMultiplier: 1.75
+  maxDevices: 1
+  tintColor: {r: 0.95, g: 0.9, b: 0.7, a: 1}
+  portraitSprite: {fileID: 4406983332565127366, guid: 7c987664237c04560bcac00eb9b47a37, type: 3}

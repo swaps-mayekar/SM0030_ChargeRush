@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc9360cf30a67434c92eeae2b3689b77, type: 3}
+  m_Name: device_powerbank
+  m_EditorClassIdentifier: ChargeRush.Runtime::ChargeRush.Data.DeviceData
+  deviceId: device_powerbank
+  displayName: Power Bank
+  category: 3
+  requiredConnector: 2
+  batteryCapacity: 200
+  chargingDurationSeconds: 7
+  servicePrice: 35
+  tintColor: {r: 0.2, g: 0.2, b: 0.25, a: 1}
+  idleSprite: {fileID: 4095048174609997672, guid: d13b06c0cfec64f20a8ef50eff9e17b1, type: 3}
+  chargingSprite: {fileID: 4095048174609997672, guid: d13b06c0cfec64f20a8ef50eff9e17b1, type: 3}
+  fullyChargedSprite: {fileID: 2653802176405700307, guid: 353c058fb4bf14ce5a10e3b1380ac29d, type: 3}

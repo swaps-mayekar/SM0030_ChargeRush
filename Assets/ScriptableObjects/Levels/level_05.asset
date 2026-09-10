@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27931b4ff60de474daa3c93f0ed202c2, type: 3}
+  m_Name: level_05
+  m_EditorClassIdentifier: ChargeRush.Runtime::ChargeRush.Data.LevelData
+  levelId: level_05
+  levelNumber: 5
+  levelName: Sports Event
+  eventName: Sports Event
+  eventDescription: Power banks and longer queues.
+  targetEarnings: 420
+  twoStarThreshold: 580
+  threeStarThreshold: 760
+  maximumMistakes: 3
+  customerSpawnIntervalSeconds: 5.5
+  spawnIntervalVariance: 1.5
+  maximumVisibleQueue: 4
+  chargingPortCount: 3
+  patienceMultiplier: 1
+  chargingSpeedMultiplier: 1
+  isTutorial: 0
+  backgroundTint: {r: 0.45, g: 0.7, b: 0.55, a: 1}
+  availableDevices:
+  - Device: {fileID: 11400000, guid: bb1878b314ee147c0ab5a40247104647, type: 2}
+    Weight: 0.7
+  - Device: {fileID: 11400000, guid: 27dcfc288626d42739c1d6e02649a0af, type: 2}
+    Weight: 0.7
+  - Device: {fileID: 11400000, guid: 60075a45f45a744df986a2abe6334d47, type: 2}
+    Weight: 0.5
+  - Device: {fileID: 11400000, guid: bc58d6d8f4cfd4fc28b7d3ded122698a, type: 2}
+    Weight: 0.8
+  availableCustomers:
+  - Customer: {fileID: 11400000, guid: 5ec3843c78af94546888fcf4286f3897, type: 2}
+    Weight: 1
+  - Customer: {fileID: 11400000, guid: b8a511d98b64c4984b4c298f9aac235e, type: 2}
+    Weight: 0.6
+  - Customer: {fileID: 11400000, guid: d63b7e732670b45c4ba0103dcdfc462e, type: 2}
+    Weight: 0.3

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc9360cf30a67434c92eeae2b3689b77, type: 3}
+  m_Name: device_notebook
+  m_EditorClassIdentifier: ChargeRush.Runtime::ChargeRush.Data.DeviceData
+  deviceId: device_notebook
+  displayName: Notebook Computer
+  category: 6
+  requiredConnector: 4
+  batteryCapacity: 300
+  chargingDurationSeconds: 12
+  servicePrice: 80
+  tintColor: {r: 0.45, g: 0.45, b: 0.5, a: 1}
+  idleSprite: {fileID: 3959058039357568927, guid: 996a1b4b289114bbb936ddd9594d7452, type: 3}
+  chargingSprite: {fileID: 3959058039357568927, guid: 996a1b4b289114bbb936ddd9594d7452, type: 3}
+  fullyChargedSprite: {fileID: 2653802176405700307, guid: 353c058fb4bf14ce5a10e3b1380ac29d, type: 3}
