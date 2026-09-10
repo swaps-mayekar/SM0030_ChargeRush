@@ -1,6 +1,7 @@
 using ChargeRush.Data;
 using ChargeRush.Economy;
 using ChargeRush.Save;
+using ChargeRush.Tutorial;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -122,6 +123,28 @@ namespace ChargeRush.Tests
         {
             Assert.AreNotEqual(ConnectorType.PowerLinkA, ConnectorType.PowerLinkB);
             Assert.AreEqual(ConnectorType.MiniPower, ConnectorType.MiniPower);
+        }
+
+        [Test]
+        public void Tutorial_ReturnThenPayment_CompletesAndUnlocksDragging()
+        {
+            var go = new GameObject("Tutorial");
+            var tutorial = go.AddComponent<TutorialDirector>();
+
+            tutorial.Begin(true);
+            tutorial.NotifyCustomerSpawned();
+            tutorial.NotifyDevicePickedFromCustomer();
+            tutorial.NotifyDevicePlaced(null);
+            tutorial.NotifyChargeComplete(null);
+            tutorial.NotifyDeviceReturned(null);
+            Assert.AreEqual(TutorialDirector.Step.CollectPayment, tutorial.CurrentStep);
+
+            tutorial.NotifyPayment();
+            Assert.AreEqual(TutorialDirector.Step.Completed, tutorial.CurrentStep);
+            Assert.IsFalse(tutorial.IsActive);
+            Assert.IsTrue(tutorial.CanDragDevice(null));
+
+            Object.DestroyImmediate(go);
         }
     }
 }

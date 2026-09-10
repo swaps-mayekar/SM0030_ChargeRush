@@ -101,7 +101,7 @@ namespace ChargeRush.Customers
             {
                 var go = new GameObject("Overflow");
                 go.transform.SetParent(transform, false);
-                go.transform.localPosition = new Vector3(-4.5f, 0.4f, 0f);
+                go.transform.localPosition = new Vector3(-7.5f, -0.1f, 0f);
                 overflowRoot = go.transform;
             }
 
@@ -109,7 +109,7 @@ namespace ChargeRush.Customers
             {
                 var slot = new GameObject($"Slot_{visibleSlots.Count}");
                 slot.transform.SetParent(slotRoot, false);
-                slot.transform.localPosition = new Vector3(-1.5f + visibleSlots.Count * 1.5f, 0.6f, 0f);
+                slot.transform.localPosition = new Vector3(-1.4f + visibleSlots.Count * 2.8f, -0.1f, 0f);
                 visibleSlots.Add(slot.transform);
             }
         }

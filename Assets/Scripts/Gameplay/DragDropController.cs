@@ -211,13 +211,16 @@ namespace ChargeRush.Gameplay
             var payment = economy != null
                 ? economy.ApplyPayment(device.Data.ServicePrice, customer.Data.PaymentMultiplier)
                 : device.Data.ServicePrice;
-            customer.NotifyPayment(payment);
             device.SetState(DeviceState.Completed);
             customer.BeginLeave();
             if (tutorial != null)
             {
                 tutorial.NotifyDeviceReturned(device);
             }
+
+            // Emit payment after the tutorial enters CollectPayment so the same
+            // transaction can complete that step instead of leaving input locked.
+            customer.NotifyPayment(payment);
         }
 
         private DeviceInstance FindDevice(Vector2 screenPosition)

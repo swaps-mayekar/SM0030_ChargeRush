@@ -290,7 +290,7 @@ namespace ChargeRush.Gameplay
             }
 
             customer.Initialize(customerData, ownerId, device, patience);
-            customer.transform.position = customerQueue.transform.position + Vector3.left * 6f;
+            customer.transform.position = customerQueue.transform.position + Vector3.left * 7.5f;
             customerQueue.TryEnqueue(customer);
             activeCustomers.Add(customer);
             GameEvents.RaiseCustomerArrived(ownerId);

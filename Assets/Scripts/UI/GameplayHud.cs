@@ -32,6 +32,11 @@ namespace ChargeRush.UI
 
         private float paymentPopupTimer;
 
+        private void Awake()
+        {
+            ConfigureResponsiveLayout();
+        }
+
         private void OnEnable()
         {
             GameEvents.EarningsChanged += OnEarnings;
@@ -215,6 +220,54 @@ namespace ChargeRush.UI
         private void OnContinue()
         {
             SceneLoader.Instance.Load(SceneLoader.LevelSelectScene);
+        }
+
+        private void ConfigureResponsiveLayout()
+        {
+            SetTopAnchor(earningsText != null ? earningsText.rectTransform : null, new Vector2(72f, -38f), new Vector2(280f, 48f), false);
+            SetTopAnchor(targetText != null ? targetText.rectTransform : null, new Vector2(72f, -82f), new Vector2(280f, 48f), false);
+            SetTopAnchor(mistakesText != null ? mistakesText.rectTransform : null, new Vector2(-500f, -38f), new Vector2(320f, 48f), true);
+            SetTopAnchor(activeChargesText != null ? activeChargesText.rectTransform : null, new Vector2(-500f, -82f), new Vector2(320f, 48f), true);
+            SetTopAnchor(tutorialText != null ? tutorialText.rectTransform : null, new Vector2(0f, -112f), new Vector2(680f, 64f), null);
+            SetTopAnchor(pauseButton != null ? pauseButton.GetComponent<RectTransform>() : null, new Vector2(-105f, -38f), new Vector2(170f, 52f), true);
+
+            var safeArea = transform.Find("SafeArea");
+            ConfigureHudIcon(safeArea != null ? safeArea.Find("CreditIcon") : null, new Vector2(32f, -38f), false);
+            ConfigureHudIcon(safeArea != null ? safeArea.Find("MistakeIcon") : null, new Vector2(-540f, -38f), true);
+        }
+
+        private static void SetTopAnchor(RectTransform rect, Vector2 position, Vector2 size, bool? alignRight)
+        {
+            if (rect == null)
+            {
+                return;
+            }
+
+            var anchor = alignRight.HasValue
+                ? new Vector2(alignRight.Value ? 1f : 0f, 1f)
+                : new Vector2(0.5f, 1f);
+            rect.anchorMin = anchor;
+            rect.anchorMax = anchor;
+            rect.pivot = alignRight.HasValue
+                ? new Vector2(alignRight.Value ? 1f : 0f, 1f)
+                : new Vector2(0.5f, 1f);
+            rect.anchoredPosition = position;
+            rect.sizeDelta = size;
+        }
+
+        private static void ConfigureHudIcon(Transform iconTransform, Vector2 position, bool alignRight)
+        {
+            if (iconTransform == null)
+            {
+                return;
+            }
+
+            SetTopAnchor(iconTransform as RectTransform, position, new Vector2(42f, 42f), alignRight);
+            var image = iconTransform.GetComponent<Image>();
+            if (image != null)
+            {
+                image.raycastTarget = false;
+            }
         }
     }
 }

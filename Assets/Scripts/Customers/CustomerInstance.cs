@@ -36,6 +36,13 @@ namespace ChargeRush.Customers
             {
                 spriteRenderer = GetComponent<SpriteRenderer>();
             }
+
+            // Customers stand behind the service counter; their devices and
+            // patience indicators use higher sorting orders and remain visible.
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.sortingOrder = 0;
+            }
         }
 
         public Transform DeviceAnchor => deviceAnchor != null ? deviceAnchor : transform;
