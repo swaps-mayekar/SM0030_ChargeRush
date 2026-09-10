@@ -3156,10 +3156,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91b44998c74a942e0b331cb99ce29910, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ChargeRush.Runtime::ChargeRush.Gameplay.LevelSession
-  catalog: {fileID: 0}
-  customerPrefab: {fileID: 0}
-  devicePrefab: {fileID: 0}
-  portPrefab: {fileID: 0}
+  catalog: {fileID: 11400000, guid: 7623ccbf333df4cba8bf9ed6ac27d8dd, type: 2}
+  customerPrefab: {fileID: 2134780529505802785, guid: 4c11e34e6654046bf94a71379062c50b, type: 3}
+  devicePrefab: {fileID: 4268021711698786912, guid: e4dbde660d7a64eac856acd2f11ec93e, type: 3}
+  portPrefab: {fileID: 3773430252364510406, guid: 4370bfec9035a464b83a076c2030b7d1, type: 3}
   customerQueue: {fileID: 124282531}
   chargingStation: {fileID: 1633481676}
   economy: {fileID: 1593738352}

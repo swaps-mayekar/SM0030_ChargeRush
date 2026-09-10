@@ -13,6 +13,13 @@ namespace ChargeRush.Pooling
 
         public ObjectPool(T prefabInstance, Transform poolParent, int prewarmCount)
         {
+            if (prefabInstance == null)
+            {
+                throw new System.ArgumentNullException(
+                    nameof(prefabInstance),
+                    $"ObjectPool<{typeof(T).Name}> requires a non-null prefab.");
+            }
+
             prefab = prefabInstance;
             parent = poolParent;
             for (var i = 0; i < prewarmCount; i++)

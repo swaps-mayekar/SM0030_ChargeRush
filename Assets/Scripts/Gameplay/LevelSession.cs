@@ -87,6 +87,17 @@ namespace ChargeRush.Gameplay
                 poolRoot.SetParent(transform, false);
             }
 
+            if (customerPrefab == null || devicePrefab == null || portPrefab == null)
+            {
+                Debug.LogError(
+                    "ChargeRush LevelSession: assign Customer, Device, and ChargingPort prefabs " +
+                    "(Assets/Prefabs). Missing: " +
+                    (customerPrefab == null ? "customerPrefab " : string.Empty) +
+                    (devicePrefab == null ? "devicePrefab " : string.Empty) +
+                    (portPrefab == null ? "portPrefab" : string.Empty));
+                return;
+            }
+
             customerPool = new ObjectPool<CustomerInstance>(customerPrefab, poolRoot, 8);
             devicePool = new ObjectPool<DeviceInstance>(devicePrefab, poolRoot, 8);
 
