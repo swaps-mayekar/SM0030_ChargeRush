@@ -28,6 +28,8 @@ namespace ChargeRush.Devices
         private bool dragging;
         private Camera worldCamera;
         private Collider2D cachedCollider;
+        private Vector3 prefabScale;
+        private Vector3 scaleBeforeDrag;
 
         private void Awake()
         {
@@ -38,6 +40,8 @@ namespace ChargeRush.Devices
 
             cachedCollider = GetComponent<Collider2D>();
             worldCamera = Camera.main;
+            prefabScale = transform.localScale;
+            scaleBeforeDrag = prefabScale;
         }
 
         public void Initialize(DeviceData data, string ownerId, string instanceId)
@@ -63,7 +67,7 @@ namespace ChargeRush.Devices
             ChargeNormalized = 0f;
             OccupiedPort = null;
             dragging = false;
-            transform.localScale = Vector3.one;
+            transform.localScale = prefabScale;
             if (progressFill != null)
             {
                 progressFill.localScale = new Vector3(0f, 1f, 1f);
@@ -95,7 +99,8 @@ namespace ChargeRush.Devices
             HomePosition = transform.position;
             HomeParent = transform.parent;
             transform.SetParent(null, true);
-            transform.localScale = Vector3.one * 1.08f;
+            scaleBeforeDrag = transform.localScale;
+            transform.localScale = scaleBeforeDrag * 1.08f;
             GameEvents.RaiseDevicePickedUp(this);
         }
 
@@ -129,7 +134,7 @@ namespace ChargeRush.Devices
             }
 
             dragging = false;
-            transform.localScale = Vector3.one;
+            transform.localScale = scaleBeforeDrag;
         }
 
         public void ReturnHome()
@@ -226,6 +231,11 @@ namespace ChargeRush.Devices
             else if (Data.IdleSprite != null)
             {
                 spriteRenderer.sprite = Data.IdleSprite;
+            }
+
+            if (cachedCollider is BoxCollider2D box && spriteRenderer.sprite != null)
+            {
+                box.size = spriteRenderer.sprite.bounds.size * 0.85f;
             }
 
             if (connectorBadge != null)

@@ -81,12 +81,24 @@ namespace ChargeRush.Editor
                     }
 
                     var isBackground = path.Contains("/bg_");
+                    var isCounter = path.Contains("/counter");
+                    var isWorldArt = path.Contains("/Characters/")
+                        || path.Contains("/Devices/")
+                        || path.Contains("/Effects/")
+                        || path.Contains("/Connectors/")
+                        || path.Contains("/Environment/");
                     importer.textureType = TextureImporterType.Sprite;
                     importer.spriteImportMode = SpriteImportMode.Single;
                     importer.alphaIsTransparency = true;
                     importer.mipmapEnabled = false;
                     importer.filterMode = FilterMode.Bilinear;
-                    importer.spritePixelsPerUnit = isBackground ? 100f : 128f;
+                    importer.spritePixelsPerUnit = isBackground
+                        ? 100f
+                        : isCounter
+                            ? 256f
+                            : isWorldArt
+                                ? 512f
+                                : 128f;
                     importer.maxTextureSize = isBackground ? 2048 : 1024;
                     importer.textureCompression = TextureImporterCompression.CompressedHQ;
                     importer.SaveAndReimport();
