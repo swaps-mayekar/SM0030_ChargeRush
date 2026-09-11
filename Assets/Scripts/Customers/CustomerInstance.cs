@@ -154,6 +154,30 @@ namespace ChargeRush.Customers
             return device;
         }
 
+        /// <summary>
+        /// Restores an uncharged device that was taken but never docked on a port.
+        /// </summary>
+        public bool ReturnUnchargedDevice(DeviceInstance device)
+        {
+            if (device == null || device.OwnerId != OwnerId || device.IsFullyCharged)
+            {
+                return false;
+            }
+
+            if (HeldDevice != null && HeldDevice != device)
+            {
+                return false;
+            }
+
+            HeldDevice = device;
+            ServicedDevice = null;
+            device.ClearPort();
+            device.SetHome(DeviceAnchor, DeviceAnchor.position);
+            device.SetState(DeviceState.WithCustomer);
+            SetState(CustomerState.HandingOver);
+            return true;
+        }
+
         public bool AcceptDevice(DeviceInstance device)
         {
             if (device == null || device.OwnerId != OwnerId || !device.IsFullyCharged)

@@ -150,6 +150,34 @@ namespace ChargeRush.Tests
         }
 
         [Test]
+        public void UnchargedDevice_ReturnsToCustomerWhenNotDocked()
+        {
+            var customerObject = new GameObject("Customer");
+            var customer = customerObject.AddComponent<CustomerInstance>();
+            var deviceObject = new GameObject("Device");
+            var device = deviceObject.AddComponent<DeviceInstance>();
+            var data = ScriptableObject.CreateInstance<DeviceData>();
+            data.Configure("phone", "Phone", DeviceCategory.BasicSmartphone, ConnectorType.PowerLinkA, 100, 1f, 20, Color.white);
+
+            device.Initialize(data, "owner", "device");
+            customer.Initialize(null, "owner", device, 10f);
+            customer.TakeDeviceFromCustomer();
+
+            Assert.AreEqual(DeviceState.AtCounter, device.State);
+            Assert.IsNull(customer.HeldDevice);
+
+            Assert.IsTrue(customer.ReturnUnchargedDevice(device));
+            Assert.AreEqual(DeviceState.WithCustomer, device.State);
+            Assert.AreSame(device, customer.HeldDevice);
+            Assert.AreSame(customer.DeviceAnchor, device.transform.parent);
+            Assert.AreEqual(CustomerState.HandingOver, customer.State);
+
+            Object.DestroyImmediate(deviceObject);
+            Object.DestroyImmediate(customerObject);
+            Object.DestroyImmediate(data);
+        }
+
+        [Test]
         public void ReturnedDevice_FollowsCustomerAndCustomerKeepsLeavingState()
         {
             var customerObject = new GameObject("Customer");

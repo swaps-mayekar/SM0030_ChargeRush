@@ -80,18 +80,14 @@ namespace ChargeRush.Gameplay
                 return;
             }
 
-            // Take from customer if still held.
+            // Take from customer if still held. Keep the customer anchor as home so a
+            // missed port drop can snap the device back instead of floating mid-air.
             if (draggedDevice.State == DeviceState.WithCustomer)
             {
                 var owner = FindOwner(draggedDevice.OwnerId);
                 if (owner != null)
                 {
                     owner.TakeDeviceFromCustomer();
-                }
-
-                if (counterDropZone != null)
-                {
-                    draggedDevice.SetHome(counterDropZone, counterDropZone.position + Vector3.up * 0.4f);
                 }
 
                 if (tutorial != null)
@@ -140,19 +136,19 @@ namespace ChargeRush.Gameplay
             var port = chargingStation != null ? chargingStation.FindPortAtScreen(screenPosition, gameplayCamera) : null;
             if (port == null)
             {
-                device.ReturnHome();
+                ReturnUnchargedToOwnerOrHome(device);
                 return;
             }
 
             if (tutorial != null && !tutorial.CanPlaceOnPort(device, port))
             {
-                device.ReturnHome();
+                ReturnUnchargedToOwnerOrHome(device);
                 return;
             }
 
             if (!port.CanAccept(device))
             {
-                device.ReturnHome();
+                ReturnUnchargedToOwnerOrHome(device);
                 GameEvents.RaiseIncorrectConnector(device);
                 if (economy != null)
                 {
@@ -173,6 +169,20 @@ namespace ChargeRush.Gameplay
             {
                 tutorial.NotifyDevicePlaced(device);
             }
+        }
+
+        private void ReturnUnchargedToOwnerOrHome(DeviceInstance device)
+        {
+            if (device != null && !device.IsFullyCharged)
+            {
+                var owner = FindOwner(device.OwnerId);
+                if (owner != null && owner.ReturnUnchargedDevice(device))
+                {
+                    return;
+                }
+            }
+
+            device.ReturnHome();
         }
 
         private void TryReturnToCustomer(DeviceInstance device, Vector2 screenPosition)
