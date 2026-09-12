@@ -307,14 +307,18 @@ namespace ChargeRush.Gameplay
 
             if (customer.ServicedDevice != null)
             {
-                devicePool.Release(customer.ServicedDevice);
-                customer.ServicedDevice.ResetForPool();
+                // Reset first so a still-docked phone frees its charging port
+                // before the pooled object is deactivated and hidden.
+                var serviced = customer.ServicedDevice;
+                serviced.ResetForPool();
+                devicePool.Release(serviced);
             }
 
             if (customer.HeldDevice != null)
             {
-                devicePool.Release(customer.HeldDevice);
-                customer.HeldDevice.ResetForPool();
+                var held = customer.HeldDevice;
+                held.ResetForPool();
+                devicePool.Release(held);
             }
 
             customer.ResetForPool();

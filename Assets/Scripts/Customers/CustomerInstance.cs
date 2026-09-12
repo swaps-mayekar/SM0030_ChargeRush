@@ -171,7 +171,7 @@ namespace ChargeRush.Customers
 
             HeldDevice = device;
             ServicedDevice = null;
-            device.ClearPort();
+            device.DetachFromPort();
             device.SetHome(DeviceAnchor, DeviceAnchor.position);
             device.SetState(DeviceState.WithCustomer);
             SetState(CustomerState.HandingOver);

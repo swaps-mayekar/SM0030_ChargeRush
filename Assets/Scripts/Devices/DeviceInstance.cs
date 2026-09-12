@@ -59,13 +59,15 @@ namespace ChargeRush.Devices
 
         public void ResetForPool()
         {
+            // Free any occupied port before clearing device state. Otherwise an
+            // abandoned mid-charge phone leaves the dock permanently blocked.
+            DetachFromPort();
             State = DeviceState.Inactive;
             Data = null;
             OwnerId = null;
             InstanceId = null;
             IsFullyCharged = false;
             ChargeNormalized = 0f;
-            OccupiedPort = null;
             dragging = false;
             transform.localScale = prefabScale;
             if (progressFill != null)
@@ -198,6 +200,27 @@ namespace ChargeRush.Devices
 
         public void ClearPort()
         {
+            OccupiedPort = null;
+        }
+
+        /// <summary>
+        /// Clears both sides of the device/port link so docks cannot stay occupied
+        /// after the device is returned, abandoned, or pooled.
+        /// </summary>
+        public void DetachFromPort()
+        {
+            var port = OccupiedPort;
+            if (port == null)
+            {
+                return;
+            }
+
+            if (port.OccupiedDevice == this)
+            {
+                port.RemoveDevice();
+                return;
+            }
+
             OccupiedPort = null;
         }
 

@@ -180,6 +180,41 @@ namespace ChargeRush.Tests
         }
 
         [Test]
+        public void AbandonedChargingDevice_FreesPortWhenPooled()
+        {
+            var portObject = new GameObject("Port");
+            var port = portObject.AddComponent<ChargeRush.Charging.ChargingPort>();
+            port.Configure(ConnectorType.PowerLinkA, null);
+
+            var deviceObject = new GameObject("Device");
+            var device = deviceObject.AddComponent<DeviceInstance>();
+            var data = ScriptableObject.CreateInstance<DeviceData>();
+            data.Configure("phone", "Phone", DeviceCategory.BasicSmartphone, ConnectorType.PowerLinkA, 100, 5f, 20, Color.white);
+            device.Initialize(data, "owner", "device");
+
+            Assert.IsTrue(port.TryPlace(device, 5f));
+            Assert.IsTrue(port.IsOccupied);
+            Assert.AreEqual(DeviceState.Charging, device.State);
+
+            // Customer leaves while the phone is still charging / docked.
+            device.ResetForPool();
+
+            Assert.IsFalse(port.IsOccupied);
+            Assert.IsNull(port.OccupiedDevice);
+            Assert.IsNull(device.OccupiedPort);
+
+            var nextObject = new GameObject("NextDevice");
+            var next = nextObject.AddComponent<DeviceInstance>();
+            next.Initialize(data, "owner2", "device2");
+            Assert.IsTrue(port.CanAccept(next));
+
+            Object.DestroyImmediate(nextObject);
+            Object.DestroyImmediate(deviceObject);
+            Object.DestroyImmediate(portObject);
+            Object.DestroyImmediate(data);
+        }
+
+        [Test]
         public void ReturnedDevice_FollowsCustomerAndCustomerKeepsLeavingState()
         {
             var customerObject = new GameObject("Customer");
