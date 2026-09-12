@@ -215,6 +215,25 @@ namespace ChargeRush.Tests
         }
 
         [Test]
+        public void ChargingPort_Configure_AppliesConnectorTintAndBadge()
+        {
+            var portObject = new GameObject("Port", typeof(SpriteRenderer));
+            var port = portObject.AddComponent<ChargeRush.Charging.ChargingPort>();
+            var renderer = portObject.GetComponent<SpriteRenderer>();
+
+            port.Configure(ConnectorType.MiniPower, null);
+
+            Assert.AreEqual(ConnectorType.MiniPower, port.ConnectorType);
+            Assert.AreEqual(DeviceInstance.ConnectorColor(ConnectorType.MiniPower), renderer.color);
+
+            var badge = portObject.transform.Find("ConnectorBadge");
+            Assert.IsNotNull(badge);
+            Assert.IsTrue(badge.gameObject.activeSelf);
+
+            Object.DestroyImmediate(portObject);
+        }
+
+        [Test]
         public void ReturnedDevice_FollowsCustomerAndCustomerKeepsLeavingState()
         {
             var customerObject = new GameObject("Customer");

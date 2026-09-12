@@ -281,7 +281,9 @@ namespace ChargeRush.Devices
                     connectorBadge.sprite = badge;
                 }
 
+                // Keep badge art colors; enlarge slightly so matching is readable.
                 connectorBadge.color = Color.white;
+                connectorBadge.transform.localScale = Vector3.one * 0.4f;
             }
         }
 
@@ -297,7 +299,7 @@ namespace ChargeRush.Devices
             }
         }
 
-        private static Sprite ResolveConnectorBadge(ConnectorType type)
+        public static Sprite ResolveConnectorBadge(ConnectorType type)
         {
             string path;
             switch (type)

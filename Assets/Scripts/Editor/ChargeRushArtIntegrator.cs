@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using ChargeRush.Charging;
 using ChargeRush.Data;
 using ChargeRush.UI;
 using TMPro;
@@ -284,6 +285,37 @@ namespace ChargeRush.Editor
                 sr.sprite = sprite;
                 sr.color = Color.white;
                 root.transform.localScale = Vector3.one * 0.9f;
+            }
+
+            var badge = root.transform.Find("ConnectorBadge");
+            if (badge == null)
+            {
+                var badgeGo = new GameObject("ConnectorBadge", typeof(SpriteRenderer));
+                badgeGo.transform.SetParent(root.transform, false);
+                badge = badgeGo.transform;
+            }
+
+            badge.localPosition = new Vector3(0f, 0.72f, 0f);
+            badge.localScale = Vector3.one * 0.42f;
+            var badgeSr = badge.GetComponent<SpriteRenderer>();
+            var badgeSprite = LoadSprite($"{ArtRoot}/Connectors/badge_powerlink_a.png");
+            if (badgeSr != null)
+            {
+                if (badgeSprite != null)
+                {
+                    badgeSr.sprite = badgeSprite;
+                }
+
+                badgeSr.color = Color.white;
+                badgeSr.sortingOrder = 6;
+            }
+
+            var port = root.GetComponent<ChargingPort>();
+            if (port != null && badgeSr != null)
+            {
+                var so = new SerializedObject(port);
+                so.FindProperty("connectorBadge").objectReferenceValue = badgeSr;
+                so.ApplyModifiedPropertiesWithoutUndo();
             }
 
             PrefabUtility.SaveAsPrefabAsset(root, path);

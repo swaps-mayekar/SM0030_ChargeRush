@@ -38,11 +38,6 @@ namespace ChargeRush.Charging
                     : ConnectorType.PowerLinkA;
                 ports[i].Configure(connector, portSprite);
                 ports[i].transform.localPosition = new Vector3(-2.2f + i * 1.4f, -1.6f, 0f);
-                var portRenderer = ports[i].GetComponent<SpriteRenderer>();
-                if (portRenderer != null)
-                {
-                    portRenderer.color = Color.white;
-                }
             }
         }
 

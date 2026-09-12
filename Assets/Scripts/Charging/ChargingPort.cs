@@ -11,6 +11,7 @@ namespace ChargeRush.Charging
         [SerializeField] private ConnectorType connectorType = ConnectorType.PowerLinkA;
         [SerializeField] private SpriteRenderer portRenderer;
         [SerializeField] private SpriteRenderer highlightRenderer;
+        [SerializeField] private SpriteRenderer connectorBadge;
         [SerializeField] private Transform socketAnchor;
 
         public ConnectorType ConnectorType => connectorType;
@@ -26,6 +27,7 @@ namespace ChargeRush.Charging
                 portRenderer = GetComponent<SpriteRenderer>();
             }
 
+            var accent = DeviceInstance.ConnectorColor(type);
             if (portRenderer != null)
             {
                 if (sprite != null)
@@ -33,8 +35,17 @@ namespace ChargeRush.Charging
                     portRenderer.sprite = sprite;
                 }
 
-                portRenderer.color = Color.white;
+                // Tint the dock so connector families are obvious at a glance.
+                portRenderer.color = accent;
             }
+
+            if (highlightRenderer != null)
+            {
+                highlightRenderer.color = new Color(accent.r, accent.g, accent.b, 0.35f);
+            }
+
+            EnsureConnectorBadge();
+            ApplyConnectorBadge();
         }
 
         public bool CanAccept(DeviceInstance device)
@@ -97,6 +108,49 @@ namespace ChargeRush.Charging
             {
                 highlightRenderer.enabled = enabled;
             }
+        }
+
+        private void EnsureConnectorBadge()
+        {
+            if (connectorBadge != null)
+            {
+                return;
+            }
+
+            var existing = transform.Find("ConnectorBadge");
+            if (existing != null)
+            {
+                connectorBadge = existing.GetComponent<SpriteRenderer>();
+                if (connectorBadge != null)
+                {
+                    return;
+                }
+            }
+
+            var badgeObject = new GameObject("ConnectorBadge");
+            badgeObject.transform.SetParent(transform, false);
+            badgeObject.transform.localPosition = new Vector3(0f, 0.72f, 0f);
+            badgeObject.transform.localScale = Vector3.one * 0.42f;
+            connectorBadge = badgeObject.AddComponent<SpriteRenderer>();
+            connectorBadge.sortingOrder = 6;
+        }
+
+        private void ApplyConnectorBadge()
+        {
+            if (connectorBadge == null)
+            {
+                return;
+            }
+
+            var badge = DeviceInstance.ResolveConnectorBadge(connectorType);
+            if (badge != null)
+            {
+                connectorBadge.sprite = badge;
+            }
+
+            connectorBadge.color = Color.white;
+            connectorBadge.enabled = true;
+            connectorBadge.gameObject.SetActive(true);
         }
     }
 }

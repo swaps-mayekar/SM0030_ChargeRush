@@ -639,10 +639,17 @@ namespace ChargeRush.Editor
             var socket = new GameObject("Socket");
             socket.transform.SetParent(go.transform, false);
             socket.transform.localPosition = Vector3.up * 0.35f;
+            var badge = new GameObject("ConnectorBadge", typeof(SpriteRenderer));
+            badge.transform.SetParent(go.transform, false);
+            badge.transform.localPosition = new Vector3(0f, 0.72f, 0f);
+            badge.transform.localScale = Vector3.one * 0.42f;
+            var badgeSr = badge.GetComponent<SpriteRenderer>();
+            badgeSr.sortingOrder = 6;
             var port = go.GetComponent<ChargingPort>();
             var so = new SerializedObject(port);
             so.FindProperty("portRenderer").objectReferenceValue = sr;
             so.FindProperty("highlightRenderer").objectReferenceValue = hsr;
+            so.FindProperty("connectorBadge").objectReferenceValue = badgeSr;
             so.FindProperty("socketAnchor").objectReferenceValue = socket.transform;
             so.ApplyModifiedPropertiesWithoutUndo();
             var prefab = PrefabUtility.SaveAsPrefabAsset(go, path);
