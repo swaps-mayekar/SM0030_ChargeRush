@@ -69,7 +69,6 @@ namespace ChargeRush.Gameplay
             }
 
             GameEvents.PaymentReceived -= OnPayment;
-            GameEvents.CustomerLeftAngry -= OnCustomerLeftAngry;
             GameEvents.ChargingCompleted -= OnChargingCompleted;
             GameEvents.DevicePickedUp -= OnDevicePickedUp;
         }
@@ -77,7 +76,6 @@ namespace ChargeRush.Gameplay
         private void Start()
         {
             GameEvents.PaymentReceived += OnPayment;
-            GameEvents.CustomerLeftAngry += OnCustomerLeftAngry;
             GameEvents.ChargingCompleted += OnChargingCompleted;
             GameEvents.DevicePickedUp += OnDevicePickedUp;
 
@@ -611,15 +609,6 @@ namespace ChargeRush.Gameplay
         private void OnPayment(int amount)
         {
             tutorial.NotifyPayment();
-        }
-
-        private void OnCustomerLeftAngry(string ownerId)
-        {
-            economy.RegisterMistake(MistakeReason.CustomerLeft, true);
-            if (economy.IsFailed)
-            {
-                Fail(MistakeReason.CustomerLeft);
-            }
         }
 
         private void OnChargingCompleted(DeviceInstance device)

@@ -150,11 +150,6 @@ namespace ChargeRush.Gameplay
             {
                 ReturnUnchargedToOwnerOrHome(device);
                 GameEvents.RaiseIncorrectConnector(device);
-                if (economy != null)
-                {
-                    economy.RegisterMistake(MistakeReason.IncorrectConnector, false);
-                }
-
                 return;
             }
 

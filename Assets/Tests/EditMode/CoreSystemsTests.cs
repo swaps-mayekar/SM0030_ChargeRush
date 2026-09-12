@@ -12,7 +12,7 @@ namespace ChargeRush.Tests
     public sealed class CoreSystemsTests
     {
         [Test]
-        public void IncorrectConnector_DoesNotCountAsFailingMistake_WhenConfiguredSoft()
+        public void IncorrectConnectorAndCustomerLeft_DoNotCountAsMistakes()
         {
             var go = new GameObject("Economy");
             var economy = go.AddComponent<EconomyManager>();
@@ -20,7 +20,9 @@ namespace ChargeRush.Tests
             level.ConfigureBasics("t", 1, "T", "E", "D", 100, 150, 200, 3, 5f, 2, 2, 1f, 1f, false, Color.white);
             economy.Configure(level);
             economy.RegisterMistake(MistakeReason.IncorrectConnector, false);
+            economy.RegisterMistake(MistakeReason.CustomerLeft, false);
             Assert.AreEqual(0, economy.Mistakes);
+            Assert.IsFalse(economy.IsFailed);
             Object.DestroyImmediate(go);
             Object.DestroyImmediate(level);
         }

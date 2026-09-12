@@ -57,11 +57,11 @@ namespace ChargeRush.Economy
                 Mistakes++;
                 CurrentStreak = 0;
                 GameEvents.RaiseMistakesChanged(Mistakes, MaximumMistakes);
-            }
 
-            if (reason == MistakeReason.CustomerLeft)
-            {
-                CustomerLeftDuringLevel = true;
+                if (reason == MistakeReason.CustomerLeft)
+                {
+                    CustomerLeftDuringLevel = true;
+                }
             }
         }
 
