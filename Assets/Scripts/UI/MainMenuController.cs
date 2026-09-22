@@ -17,7 +17,6 @@ namespace ChargeRush.UI
         [SerializeField] private Button challengeButton;
         [SerializeField] private Button endlessButton;
         [SerializeField] private Button achievementsButton;
-        [SerializeField] private Button settingsButton;
         [SerializeField] private Button upgradesButton;
         [SerializeField] private GameObject upgradesPanel;
         [SerializeField] private Transform upgradesContent;
@@ -31,7 +30,6 @@ namespace ChargeRush.UI
             if (challengeButton != null) challengeButton.onClick.AddListener(OnChallenge);
             if (endlessButton != null) endlessButton.onClick.AddListener(OnEndless);
             if (achievementsButton != null) achievementsButton.onClick.AddListener(() => SceneLoader.Instance.Load(SceneLoader.AchievementsScene));
-            if (settingsButton != null) settingsButton.onClick.AddListener(() => SceneLoader.Instance.Load(SceneLoader.SettingsScene));
             if (upgradesButton != null) upgradesButton.onClick.AddListener(OpenUpgrades);
             if (closeUpgradesButton != null) closeUpgradesButton.onClick.AddListener(() => upgradesPanel.SetActive(false));
         }

@@ -28,7 +28,6 @@ Original casual landscape mobile prototype: run a device-charging service at pub
 - `LevelSelect` – 10 story levels with lock/star state
 - `Gameplay` – data-driven level session with event backgrounds
 - `Achievements`
-- `Settings`
 
 ## Art direction
 

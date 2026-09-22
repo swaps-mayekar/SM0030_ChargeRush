@@ -14,7 +14,6 @@ namespace ChargeRush.Core
         public const string LevelSelectScene = "2_LevelSelect";
         public const string GameplayScene = "3_Gameplay";
         public const string AchievementsScene = "4_Achievements";
-        public const string SettingsScene = "5_Settings";
 
         private bool isLoading;
 

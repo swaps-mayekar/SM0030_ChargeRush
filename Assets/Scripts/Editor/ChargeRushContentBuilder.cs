@@ -663,7 +663,6 @@ namespace ChargeRush.Editor
             BuildMenuScene(catalog);
             BuildLevelSelectScene();
             BuildAchievementsScene();
-            BuildSettingsScene();
             BuildGameplayScene(catalog, prefabs, sprites);
             ConfigureBuildSettings();
         }
@@ -698,9 +697,8 @@ namespace ChargeRush.Editor
             var levels = CreateButton(safe, "LevelSelect", "Level Select", new Vector2(0f, -20f));
             var challenge = CreateButton(safe, "Challenge", "Challenge Mode", new Vector2(0f, -80f));
             var endless = CreateButton(safe, "Endless", "Endless Mode", new Vector2(0f, -140f));
-            var achievements = CreateButton(safe, "Achievements", "Achievements", new Vector2(-220f, -210f));
-            var settings = CreateButton(safe, "Settings", "Settings", new Vector2(0f, -210f));
-            var upgrades = CreateButton(safe, "Upgrades", "Upgrades", new Vector2(220f, -210f));
+            var achievements = CreateButton(safe, "Achievements", "Achievements", new Vector2(-160f, -210f));
+            var upgrades = CreateButton(safe, "Upgrades", "Upgrades", new Vector2(160f, -210f));
             var upgradesPanel = CreatePanel(safe, "UpgradesPanel", new Vector2(0f, 0f), new Vector2(700f, 420f));
             upgradesPanel.SetActive(false);
             var upgradesContent = new GameObject("Content", typeof(RectTransform));
@@ -715,7 +713,6 @@ namespace ChargeRush.Editor
             so.FindProperty("challengeButton").objectReferenceValue = challenge;
             so.FindProperty("endlessButton").objectReferenceValue = endless;
             so.FindProperty("achievementsButton").objectReferenceValue = achievements;
-            so.FindProperty("settingsButton").objectReferenceValue = settings;
             so.FindProperty("upgradesButton").objectReferenceValue = upgrades;
             so.FindProperty("upgradesPanel").objectReferenceValue = upgradesPanel;
             so.FindProperty("upgradesContent").objectReferenceValue = upgradesContent.transform;
@@ -762,33 +759,6 @@ namespace ChargeRush.Editor
             so.FindProperty("backButton").objectReferenceValue = back;
             so.ApplyModifiedPropertiesWithoutUndo();
             EditorSceneManager.SaveScene(scene, $"{SceneRoot}/4_Achievements.unity");
-        }
-
-        private static void BuildSettingsScene()
-        {
-            var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            CreateCamera();
-            CreateEventSystem();
-            var canvas = CreateCanvas("SettingsCanvas");
-            var safe = CreateSafeArea(canvas.transform);
-            CreateTMP(safe, "Title", "Settings", 48, new Vector2(0f, 220f));
-            var music = CreateSlider(safe, "Music", new Vector2(0f, 80f));
-            var sfx = CreateSlider(safe, "Sfx", new Vector2(0f, 20f));
-            var toggleGo = new GameObject("ReplayTutorial", typeof(RectTransform), typeof(Toggle));
-            toggleGo.transform.SetParent(safe, false);
-            toggleGo.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -40f);
-            var toggle = toggleGo.GetComponent<Toggle>();
-            var back = CreateButton(safe, "Back", "Back", new Vector2(-120f, -180f));
-            var reset = CreateButton(safe, "Reset", "Reset Progress", new Vector2(120f, -180f));
-            var controller = canvas.AddComponent<SettingsController>();
-            var so = new SerializedObject(controller);
-            so.FindProperty("musicSlider").objectReferenceValue = music;
-            so.FindProperty("sfxSlider").objectReferenceValue = sfx;
-            so.FindProperty("replayTutorialToggle").objectReferenceValue = toggle;
-            so.FindProperty("backButton").objectReferenceValue = back;
-            so.FindProperty("resetButton").objectReferenceValue = reset;
-            so.ApplyModifiedPropertiesWithoutUndo();
-            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/5_Settings.unity");
         }
 
         private static void BuildGameplayScene(GameCatalog catalog, PrefabSet prefabs, Dictionary<string, Sprite> sprites)
@@ -917,8 +887,7 @@ namespace ChargeRush.Editor
                 $"{SceneRoot}/1_MainMenu.unity",
                 $"{SceneRoot}/2_LevelSelect.unity",
                 $"{SceneRoot}/3_Gameplay.unity",
-                $"{SceneRoot}/4_Achievements.unity",
-                $"{SceneRoot}/5_Settings.unity"
+                $"{SceneRoot}/4_Achievements.unity"
             };
 
             var list = new EditorBuildSettingsScene[scenes.Length];
@@ -1022,19 +991,6 @@ namespace ChargeRush.Editor
             rt.anchoredPosition = pos;
             go.GetComponent<Image>().color = new Color(0.08f, 0.1f, 0.14f, 0.92f);
             return go;
-        }
-
-        private static Slider CreateSlider(Transform parent, string name, Vector2 pos)
-        {
-            var go = new GameObject(name, typeof(RectTransform), typeof(Slider));
-            go.transform.SetParent(parent, false);
-            go.GetComponent<RectTransform>().anchoredPosition = pos;
-            go.GetComponent<RectTransform>().sizeDelta = new Vector2(360f, 30f);
-            var slider = go.GetComponent<Slider>();
-            slider.minValue = 0f;
-            slider.maxValue = 1f;
-            slider.value = 0.8f;
-            return slider;
         }
     }
 }

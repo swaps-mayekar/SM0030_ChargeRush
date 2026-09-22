@@ -385,7 +385,6 @@ namespace ChargeRush.Editor
             StyleButton(safe.Find("Challenge"), LoadSprite($"{ArtRoot}/UI/button_primary.png"));
             StyleButton(safe.Find("Endless"), LoadSprite($"{ArtRoot}/UI/button_primary.png"));
             StyleButton(safe.Find("Achievements"), LoadSprite($"{ArtRoot}/UI/button_primary.png"));
-            StyleButton(safe.Find("Settings"), LoadSprite($"{ArtRoot}/UI/button_primary.png"));
             StyleButton(safe.Find("Upgrades"), LoadSprite($"{ArtRoot}/UI/button_primary.png"));
 
             var title = safe.Find("Title");
