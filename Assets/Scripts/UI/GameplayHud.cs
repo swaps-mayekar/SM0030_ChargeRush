@@ -108,12 +108,13 @@ namespace ChargeRush.UI
         {
             if (earningsText != null)
             {
-                earningsText.text = $"Credits: {value}";
+                // CreditIcon sits beside this label in the HUD chrome.
+                earningsText.text = CreditUi.Format(value);
             }
 
             if (targetText != null && LevelSession.Instance != null && LevelSession.Instance.Level != null)
             {
-                targetText.text = $"Target: {LevelSession.Instance.Level.TargetEarnings}";
+                targetText.text = $"Target: {CreditUi.Format(LevelSession.Instance.Level.TargetEarnings)}";
             }
         }
 
@@ -133,7 +134,8 @@ namespace ChargeRush.UI
             }
 
             paymentPopupText.gameObject.SetActive(true);
-            paymentPopupText.text = $"+{amount} CR";
+            paymentPopupText.text = CreditUi.FormatSigned(amount);
+            CreditUi.EnsureIconAfterText(paymentPopupText, 52f);
             paymentPopupTimer = 1.1f;
         }
 
@@ -158,7 +160,7 @@ namespace ChargeRush.UI
                 if (completeStatsText != null)
                 {
                     completeStatsText.text =
-                        $"Earnings: {eco.CurrentEarnings} CR\nCustomers: {eco.CustomersServed}\nMistakes: {eco.Mistakes}";
+                        $"Earnings: {CreditUi.Format(eco.CurrentEarnings)}\nCustomers: {eco.CustomersServed}\nMistakes: {eco.Mistakes}";
                 }
             }
         }

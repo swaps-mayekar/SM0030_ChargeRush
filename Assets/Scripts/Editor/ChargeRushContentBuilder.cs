@@ -700,7 +700,7 @@ namespace ChargeRush.Editor
             var safe = CreateSafeArea(canvas.transform);
             var title = CreateTMP(safe, "Title", "ChargeRush", 64, new Vector2(0f, 220f), UiTextRole.Heading);
             var career = CreateTMP(safe, "Career", "Unemployed", 28, new Vector2(0f, 150f), UiTextRole.Body);
-            var credits = CreateTMP(safe, "Credits", "0 CR", 28, new Vector2(0f, 110f), UiTextRole.Body);
+            var credits = CreateTMP(safe, "Credits", "0", 28, new Vector2(0f, 110f), UiTextRole.Body);
             var play = CreateButton(safe, "Play", "Play", new Vector2(0f, 40f));
             var levels = CreateButton(safe, "LevelSelect", "Level Select", new Vector2(0f, -20f));
             var challenge = CreateButton(safe, "Challenge", "Challenge Mode", new Vector2(0f, -80f));
@@ -867,7 +867,7 @@ namespace ChargeRush.Editor
 
             var canvas = CreateCanvas("GameplayCanvas");
             var safe = CreateSafeArea(canvas.transform);
-            var earnings = CreateTMP(safe, "Earnings", "Credits: 0", 28, new Vector2(-420f, 200f), UiTextRole.Body);
+            var earnings = CreateTMP(safe, "Earnings", "0", 28, new Vector2(-420f, 200f), UiTextRole.Body);
             earnings.alignment = TextAlignmentOptions.Left;
             var target = CreateTMP(safe, "Target", "Target: 0", 28, new Vector2(-420f, 160f), UiTextRole.Body);
             target.alignment = TextAlignmentOptions.Left;

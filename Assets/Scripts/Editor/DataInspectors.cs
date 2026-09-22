@@ -30,7 +30,7 @@ namespace ChargeRush.Editor
         {
             DrawDefaultInspector();
             var device = (DeviceData)target;
-            EditorGUILayout.HelpBox($"{device.DisplayName} uses {device.RequiredConnector} and earns {device.ServicePrice} CR.", MessageType.Info);
+            EditorGUILayout.HelpBox($"{device.DisplayName} uses {device.RequiredConnector} and earns {device.ServicePrice} credits.", MessageType.Info);
         }
     }
 

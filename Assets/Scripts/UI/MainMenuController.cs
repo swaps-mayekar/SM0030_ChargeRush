@@ -49,7 +49,8 @@ namespace ChargeRush.UI
 
             if (creditsText != null)
             {
-                creditsText.text = $"{SaveManager.Instance.Data.TotalCredits} CR";
+                creditsText.text = CreditUi.Format(SaveManager.Instance.Data.TotalCredits);
+                CreditUi.EnsureTrailingIcon(creditsText, 48f);
             }
         }
 
@@ -141,11 +142,16 @@ namespace ChargeRush.UI
                     listRoot,
                     $"Upgrade_{upgrade.UpgradeId}",
                     cost > 0
-                        ? $"{upgrade.DisplayName} Lv {level}/{upgrade.MaxLevel} - {cost} CR"
+                        ? $"{upgrade.DisplayName} Lv {level}/{upgrade.MaxLevel} - {CreditUi.Format(cost)}"
                         : $"{upgrade.DisplayName} MAX",
                     26f,
                     48f,
                     UiTextRole.Heading);
+
+                if (cost > 0)
+                {
+                    CreditUi.EnsureIconAfterText(label, 34f);
+                }
 
                 var button = label.gameObject.AddComponent<Button>();
                 var captured = upgrade;
