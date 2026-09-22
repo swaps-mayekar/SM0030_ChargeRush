@@ -626,7 +626,7 @@ namespace ChargeRush.Editor
             sr.sprite = sprite;
             sr.sortingOrder = 3;
             var col = go.GetComponent<BoxCollider2D>();
-            col.size = new Vector2(0.9f, 0.9f);
+            col.size = new Vector2(1.35f, 1.35f);
             var highlight = new GameObject("Highlight", typeof(SpriteRenderer));
             highlight.transform.SetParent(go.transform, false);
             highlight.transform.localScale = Vector3.one * 1.2f;
@@ -637,7 +637,7 @@ namespace ChargeRush.Editor
             hsr.sortingOrder = 2;
             var socket = new GameObject("Socket");
             socket.transform.SetParent(go.transform, false);
-            socket.transform.localPosition = Vector3.up * 0.35f;
+            socket.transform.localPosition = Vector3.up * 0.12f;
             var badge = new GameObject("ConnectorBadge", typeof(SpriteRenderer));
             badge.transform.SetParent(go.transform, false);
             badge.transform.localPosition = new Vector3(0f, 0.72f, 0f);

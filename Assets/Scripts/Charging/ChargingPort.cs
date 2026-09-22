@@ -18,6 +18,31 @@ namespace ChargeRush.Charging
         public bool IsOccupied => OccupiedDevice != null;
         public DeviceInstance OccupiedDevice { get; private set; }
         public Transform SocketAnchor => socketAnchor != null ? socketAnchor : transform;
+        public int DrawOrder { get; private set; } = 3;
+
+        public void SetDrawOrder(int order)
+        {
+            DrawOrder = order;
+            if (portRenderer == null)
+            {
+                portRenderer = GetComponent<SpriteRenderer>();
+            }
+
+            if (portRenderer != null)
+            {
+                portRenderer.sortingOrder = order;
+            }
+
+            if (highlightRenderer != null)
+            {
+                highlightRenderer.sortingOrder = order - 1;
+            }
+
+            if (connectorBadge != null)
+            {
+                connectorBadge.sortingOrder = order + 2;
+            }
+        }
 
         public void Configure(ConnectorType type, Sprite sprite)
         {
@@ -63,10 +88,15 @@ namespace ChargeRush.Charging
             OccupiedDevice = device;
             device.AssignPort(this);
             device.SetHome(SocketAnchor, SocketAnchor.position);
-            device.transform.position = SocketAnchor.position;
+            device.ApplyDockedPresentation();
             device.BeginCharge(chargeDuration);
             GameEvents.RaiseDevicePlacedCorrectly(device);
             SetHighlight(false);
+            if (connectorBadge != null)
+            {
+                connectorBadge.gameObject.SetActive(false);
+            }
+
             return true;
         }
 
@@ -79,6 +109,7 @@ namespace ChargeRush.Charging
             }
 
             OccupiedDevice = null;
+            ApplyConnectorBadge();
             return device;
         }
 

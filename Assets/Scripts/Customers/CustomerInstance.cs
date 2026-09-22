@@ -66,6 +66,7 @@ namespace ChargeRush.Customers
             if (device != null)
             {
                 device.SetHome(DeviceAnchor, DeviceAnchor.position);
+                device.ApplyHeldPresentation();
                 device.SetState(DeviceState.WithCustomer);
             }
         }
@@ -173,6 +174,7 @@ namespace ChargeRush.Customers
             ServicedDevice = null;
             device.DetachFromPort();
             device.SetHome(DeviceAnchor, DeviceAnchor.position);
+            device.ApplyHeldPresentation();
             device.SetState(DeviceState.WithCustomer);
             SetState(CustomerState.HandingOver);
             return true;
@@ -187,6 +189,7 @@ namespace ChargeRush.Customers
 
             ServicedDevice = device;
             device.SetHome(DeviceAnchor, DeviceAnchor.position);
+            device.ApplyHeldPresentation();
             device.transform.position = DeviceAnchor.position;
             device.SetState(DeviceState.ReturningToCustomer);
             SetState(CustomerState.ReceivingDevice);

@@ -284,7 +284,8 @@ namespace ChargeRush.Editor
             {
                 sr.sprite = sprite;
                 sr.color = Color.white;
-                root.transform.localScale = Vector3.one * 0.9f;
+                // Default mid-size; ChargingStation.EnsurePortCount scales per active count.
+                root.transform.localScale = Vector3.one * 0.62f;
             }
 
             var badge = root.transform.Find("ConnectorBadge");

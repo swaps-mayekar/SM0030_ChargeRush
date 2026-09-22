@@ -31,6 +31,10 @@ namespace ChargeRush.Devices
         private Vector3 prefabScale;
         private Vector3 scaleBeforeDrag;
 
+        // Docked phones should sit in the cradle, not cover the whole pod.
+        private const float DockedWorldScaleFactor = 0.4f;
+        private static readonly Vector3 DockedLocalOffset = new Vector3(0f, 0.08f, 0f);
+
         private void Awake()
         {
             if (spriteRenderer == null)
@@ -69,7 +73,7 @@ namespace ChargeRush.Devices
             IsFullyCharged = false;
             ChargeNormalized = 0f;
             dragging = false;
-            transform.localScale = prefabScale;
+            ApplyHeldPresentation();
             if (progressFill != null)
             {
                 progressFill.localScale = new Vector3(0f, 1f, 1f);
@@ -90,6 +94,31 @@ namespace ChargeRush.Devices
             transform.position = worldPosition;
         }
 
+        /// <summary>Shrink and seat the device in a charging cradle.</summary>
+        public void ApplyDockedPresentation()
+        {
+            var parentLossy = transform.parent != null ? transform.parent.lossyScale.x : 1f;
+            var desiredWorld = prefabScale.x * DockedWorldScaleFactor;
+            transform.localScale = Vector3.one * (desiredWorld / Mathf.Max(0.01f, parentLossy));
+            transform.localPosition = DockedLocalOffset;
+            HomePosition = transform.position;
+            if (spriteRenderer != null)
+            {
+                var order = OccupiedPort != null ? OccupiedPort.DrawOrder + 1 : 4;
+                spriteRenderer.sortingOrder = order;
+            }
+        }
+
+        /// <summary>Restore normal handheld / counter scale after leaving a dock.</summary>
+        public void ApplyHeldPresentation()
+        {
+            transform.localScale = prefabScale;
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.sortingOrder = 8;
+            }
+        }
+
         public void SetState(DeviceState state)
         {
             State = state;
@@ -107,8 +136,10 @@ namespace ChargeRush.Devices
             HomePosition = transform.position;
             HomeParent = transform.parent;
             transform.SetParent(null, true);
-            scaleBeforeDrag = transform.localScale;
-            transform.localScale = scaleBeforeDrag * 1.08f;
+            // Always lift to held size — docked scale must not carry into the drag.
+            scaleBeforeDrag = prefabScale;
+            ApplyHeldPresentation();
+            transform.localScale = prefabScale * 1.08f;
             GameEvents.RaiseDevicePickedUp(this);
         }
 
@@ -153,6 +184,15 @@ namespace ChargeRush.Devices
             }
 
             transform.position = HomePosition;
+            // If home is a dock socket, re-apply cradle scale; otherwise held size.
+            if (OccupiedPort != null && HomeParent == OccupiedPort.SocketAnchor)
+            {
+                ApplyDockedPresentation();
+            }
+            else
+            {
+                ApplyHeldPresentation();
+            }
         }
 
         public void BeginCharge(float durationSeconds)
