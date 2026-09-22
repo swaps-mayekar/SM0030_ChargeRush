@@ -8,11 +8,11 @@ PlayerSettings:
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
-  defaultScreenOrientation: 3
+  defaultScreenOrientation: 4
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: ChargeRush Studio
+  companyName: Dexter Docherty
   productName: ChargeRush
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -63,7 +63,7 @@ PlayerSettings:
   allowedAutorotateToPortraitUpsideDown: 0
   allowedAutorotateToLandscapeRight: 1
   allowedAutorotateToLandscapeLeft: 1
-  useOSAutorotation: 1
+  useOSAutorotation: 0
   use32BitDisplayBuffer: 1
   preserveFramebufferAlpha: 0
   disableDepthAndStencilBuffers: 0
@@ -167,7 +167,7 @@ PlayerSettings:
   androidMinAspectRatio: 1
   applicationIdentifier:
     Standalone: com.chargerush.studio.chargerush
-    iPhone: com.chargerush.studio.chargerush
+    iPhone: com.dexdixhr.chargerush
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -296,8 +296,13 @@ PlayerSettings:
   AndroidReportGooglePlayAppDependencies: 1
   androidSymbolsSizeThreshold: 800
   m_BuildTargetIcons:
-  - m_BuildTarget: Standalone
-    m_Icons: []
+  - m_BuildTarget: 
+    m_Icons:
+    - serializedVersion: 2
+      m_Icon: {fileID: 2800000, guid: ddb7bc75dd0a246a7bf5a9ab8bfd4389, type: 3}
+      m_Width: 128
+      m_Height: 128
+      m_Kind: 0
   m_BuildTargetPlatformIcons:
   - m_BuildTarget: iPhone
     m_Icons:
