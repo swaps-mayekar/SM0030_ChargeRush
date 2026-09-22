@@ -19,7 +19,7 @@ namespace ChargeRush.UI
         [SerializeField] private Button achievementsButton;
         [SerializeField] private Button upgradesButton;
         [SerializeField] private GameObject upgradesPanel;
-        [SerializeField] private Transform upgradesContent;
+        [SerializeField] private RectTransform upgradesContent;
         [SerializeField] private Button closeUpgradesButton;
 
         private void Start()
@@ -120,10 +120,8 @@ namespace ChargeRush.UI
                 return;
             }
 
-            for (var i = upgradesContent.childCount - 1; i >= 0; i--)
-            {
-                Destroy(upgradesContent.GetChild(i).gameObject);
-            }
+            var listRoot = UiScrollList.Ensure(upgradesContent, new Vector2(640f, 280f), new Vector2(0f, 40f));
+            UiScrollList.ClearRows(listRoot);
 
             var upgrades = GameBootstrap.Instance.Catalog.Upgrades;
             var manager = FindFirstObjectByType<UpgradeManager>();
@@ -137,17 +135,18 @@ namespace ChargeRush.UI
             for (var i = 0; i < upgrades.Count; i++)
             {
                 var upgrade = upgrades[i];
-                var row = new GameObject($"Upgrade_{upgrade.UpgradeId}", typeof(RectTransform));
-                row.transform.SetParent(upgradesContent, false);
-                var text = row.AddComponent<TextMeshProUGUI>();
                 var level = SaveManager.Instance != null ? SaveManager.Instance.GetUpgradeLevel(upgrade.UpgradeId) : 0;
                 var cost = level < upgrade.MaxLevel ? upgrade.GetCost(level + 1) : -1;
-                text.text = cost > 0
-                    ? $"{upgrade.DisplayName} Lv {level}/{upgrade.MaxLevel} - {cost} CR"
-                    : $"{upgrade.DisplayName} MAX";
-                text.fontSize = 28f;
+                var label = UiScrollList.CreateTextRow(
+                    listRoot,
+                    $"Upgrade_{upgrade.UpgradeId}",
+                    cost > 0
+                        ? $"{upgrade.DisplayName} Lv {level}/{upgrade.MaxLevel} - {cost} CR"
+                        : $"{upgrade.DisplayName} MAX",
+                    26f,
+                    48f);
 
-                var button = row.AddComponent<Button>();
+                var button = label.gameObject.AddComponent<Button>();
                 var captured = upgrade;
                 button.onClick.AddListener(() =>
                 {

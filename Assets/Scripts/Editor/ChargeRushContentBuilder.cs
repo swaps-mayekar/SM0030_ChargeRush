@@ -697,8 +697,9 @@ namespace ChargeRush.Editor
             var upgrades = CreateButton(safe, "Upgrades", "Upgrades", new Vector2(160f, -210f));
             var upgradesPanel = CreatePanel(safe, "UpgradesPanel", new Vector2(0f, 0f), new Vector2(700f, 420f));
             upgradesPanel.SetActive(false);
-            var upgradesContent = new GameObject("Content", typeof(RectTransform));
-            upgradesContent.transform.SetParent(upgradesPanel.transform, false);
+            CreateTMP(upgradesPanel.transform, "UpgradesTitle", "Upgrades", 36, new Vector2(0f, 170f));
+            var upgradesContent = CreateListContent(upgradesPanel.transform, new Vector2(640f, 280f));
+            upgradesContent.anchoredPosition = new Vector2(0f, 40f);
             var closeUpgrades = CreateButton(upgradesPanel.transform, "CloseUpgrades", "Close", new Vector2(0f, -170f));
             var controller = canvas.AddComponent<MainMenuController>();
             var so = new SerializedObject(controller);
@@ -711,7 +712,7 @@ namespace ChargeRush.Editor
             so.FindProperty("achievementsButton").objectReferenceValue = achievements;
             so.FindProperty("upgradesButton").objectReferenceValue = upgrades;
             so.FindProperty("upgradesPanel").objectReferenceValue = upgradesPanel;
-            so.FindProperty("upgradesContent").objectReferenceValue = upgradesContent.transform;
+            so.FindProperty("upgradesContent").objectReferenceValue = upgradesContent;
             so.FindProperty("closeUpgradesButton").objectReferenceValue = closeUpgrades;
             so.ApplyModifiedPropertiesWithoutUndo();
             EditorSceneManager.SaveScene(scene, $"{SceneRoot}/1_MainMenu.unity");

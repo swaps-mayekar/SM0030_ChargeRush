@@ -9,7 +9,7 @@ namespace ChargeRush.UI
     /// </summary>
     public static class UiScrollList
     {
-        public static Transform Ensure(RectTransform contentRoot)
+        public static Transform Ensure(RectTransform contentRoot, Vector2? viewportSize = null, Vector2? anchoredPosition = null)
         {
             if (contentRoot == null)
             {
@@ -19,8 +19,8 @@ namespace ChargeRush.UI
             contentRoot.anchorMin = new Vector2(0.5f, 0.5f);
             contentRoot.anchorMax = new Vector2(0.5f, 0.5f);
             contentRoot.pivot = new Vector2(0.5f, 0.5f);
-            contentRoot.anchoredPosition = Vector2.zero;
-            contentRoot.sizeDelta = new Vector2(900f, 380f);
+            contentRoot.anchoredPosition = anchoredPosition ?? Vector2.zero;
+            contentRoot.sizeDelta = viewportSize ?? new Vector2(900f, 380f);
 
             var list = contentRoot.Find("List") as RectTransform;
             if (list == null)
