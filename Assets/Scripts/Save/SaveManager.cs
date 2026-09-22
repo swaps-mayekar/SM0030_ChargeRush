@@ -206,8 +206,6 @@ namespace ChargeRush.Save
 
             data.TotalCredits = Mathf.Max(0, data.TotalCredits);
             data.LifetimeEarnings = Mathf.Max(0, data.LifetimeEarnings);
-            data.MusicVolume = Mathf.Clamp01(data.MusicVolume);
-            data.SfxVolume = Mathf.Clamp01(data.SfxVolume);
         }
 
         public static SaveData Deserialize(string json)

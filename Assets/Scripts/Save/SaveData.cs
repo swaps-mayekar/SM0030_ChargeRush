@@ -28,8 +28,6 @@ namespace ChargeRush.Save
         public int StoryLevelsCompleted;
         public bool TutorialCompleted;
         public string CareerRank = "Unemployed";
-        public float MusicVolume = 0.8f;
-        public float SfxVolume = 1f;
         public bool ReplayTutorialOnNextLevelOne;
         public int EndlessBestEarnings;
         public int EndlessBestCustomers;

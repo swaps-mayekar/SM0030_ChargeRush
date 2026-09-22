@@ -121,20 +121,4 @@ namespace ChargeRush.Data
         VeryImpatient = 3,
         Leaves = 4
     }
-
-    public enum AudioCue
-    {
-        CustomerArrival = 0,
-        DevicePickup = 1,
-        DevicePlacedCorrectly = 2,
-        IncorrectConnector = 3,
-        ChargingStarted = 4,
-        ChargingComplete = 5,
-        DeviceReturned = 6,
-        Payment = 7,
-        AchievementUnlocked = 8,
-        LevelComplete = 9,
-        LevelFailed = 10,
-        ButtonClick = 11
-    }
 }

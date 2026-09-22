@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using ChargeRush.Audio;
 using ChargeRush.Charging;
 using ChargeRush.Core;
 using ChargeRush.Customers;
@@ -138,8 +137,6 @@ namespace ChargeRush.Editor
             CreateFolder("Assets/Art/Environment");
             CreateFolder("Assets/Art/UI");
             CreateFolder("Assets/Art/Effects");
-            CreateFolder("Assets/Audio/Music");
-            CreateFolder("Assets/Audio/SFX");
             CreateFolder("Assets/Prefabs/Characters");
             CreateFolder("Assets/Prefabs/Devices");
             CreateFolder("Assets/Prefabs/Stations");
@@ -676,7 +673,6 @@ namespace ChargeRush.Editor
             bootstrap.AddComponent<SceneLoader>();
             bootstrap.AddComponent<SaveManager>();
             bootstrap.AddComponent<InputManager>();
-            bootstrap.AddComponent<AudioManager>();
             var so = new SerializedObject(bootstrap.GetComponent<GameBootstrap>());
             so.FindProperty("catalog").objectReferenceValue = catalog;
             so.ApplyModifiedPropertiesWithoutUndo();
@@ -915,7 +911,7 @@ namespace ChargeRush.Editor
 
         private static Camera CreateCamera()
         {
-            var camGo = new GameObject("Main Camera", typeof(Camera), typeof(AudioListener));
+            var camGo = new GameObject("Main Camera", typeof(Camera));
             camGo.tag = "MainCamera";
             var cam = camGo.GetComponent<Camera>();
             cam.orthographic = true;

@@ -23,7 +23,7 @@ Original casual landscape mobile prototype: run a device-charging service at pub
 
 ## Scenes
 
-- `Boot` – persistent services (save, input, audio, catalog, scene loader)
+- `Boot` – persistent services (save, input, catalog, scene loader)
 - `MainMenu` – logo, play, modes, upgrades, navigation
 - `LevelSelect` – 10 story levels with lock/star state
 - `Gameplay` – data-driven level session with event backgrounds
@@ -54,6 +54,5 @@ EditMode and PlayMode assemblies under `Assets/Tests`.
 
 ## Notes
 
-- Audio still uses cue hooks / placeholders until final SFX/music are authored
 - App Store signing remains a production follow-up
 - No real device brand or proprietary connector names are used in authored content
