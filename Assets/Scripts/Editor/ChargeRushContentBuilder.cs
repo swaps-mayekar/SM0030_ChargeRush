@@ -725,14 +725,11 @@ namespace ChargeRush.Editor
             var canvas = CreateCanvas("LevelSelectCanvas");
             var safe = CreateSafeArea(canvas.transform);
             CreateTMP(safe, "Title", "Level Select", 48, new Vector2(0f, 220f));
-            var content = new GameObject("Content", typeof(RectTransform));
-            content.transform.SetParent(safe, false);
-            var rt = content.GetComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(800f, 360f);
+            var content = CreateListContent(safe, new Vector2(900f, 380f));
             var back = CreateButton(safe, "Back", "Back", new Vector2(0f, -230f));
             var controller = canvas.AddComponent<LevelSelectController>();
             var so = new SerializedObject(controller);
-            so.FindProperty("contentRoot").objectReferenceValue = content.transform;
+            so.FindProperty("contentRoot").objectReferenceValue = content;
             so.FindProperty("backButton").objectReferenceValue = back;
             so.ApplyModifiedPropertiesWithoutUndo();
             EditorSceneManager.SaveScene(scene, $"{SceneRoot}/2_LevelSelect.unity");
@@ -746,15 +743,27 @@ namespace ChargeRush.Editor
             var canvas = CreateCanvas("AchievementsCanvas");
             var safe = CreateSafeArea(canvas.transform);
             CreateTMP(safe, "Title", "Achievements", 48, new Vector2(0f, 220f));
-            var content = new GameObject("Content", typeof(RectTransform));
-            content.transform.SetParent(safe, false);
+            var content = CreateListContent(safe, new Vector2(900f, 380f));
             var back = CreateButton(safe, "Back", "Back", new Vector2(0f, -230f));
             var controller = canvas.AddComponent<AchievementsScreenController>();
             var so = new SerializedObject(controller);
-            so.FindProperty("contentRoot").objectReferenceValue = content.transform;
+            so.FindProperty("contentRoot").objectReferenceValue = content;
             so.FindProperty("backButton").objectReferenceValue = back;
             so.ApplyModifiedPropertiesWithoutUndo();
             EditorSceneManager.SaveScene(scene, $"{SceneRoot}/4_Achievements.unity");
+        }
+
+        private static RectTransform CreateListContent(Transform parent, Vector2 size)
+        {
+            var content = new GameObject("Content", typeof(RectTransform));
+            content.transform.SetParent(parent, false);
+            var rt = content.GetComponent<RectTransform>();
+            rt.anchorMin = new Vector2(0.5f, 0.5f);
+            rt.anchorMax = new Vector2(0.5f, 0.5f);
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.anchoredPosition = Vector2.zero;
+            rt.sizeDelta = size;
+            return rt;
         }
 
         private static void BuildGameplayScene(GameCatalog catalog, PrefabSet prefabs, Dictionary<string, Sprite> sprites)

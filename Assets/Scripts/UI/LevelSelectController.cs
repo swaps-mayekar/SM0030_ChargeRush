@@ -1,7 +1,6 @@
 using ChargeRush.Core;
 using ChargeRush.Data;
 using ChargeRush.Save;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +8,7 @@ namespace ChargeRush.UI
 {
     public sealed class LevelSelectController : MonoBehaviour
     {
-        [SerializeField] private Transform contentRoot;
+        [SerializeField] private RectTransform contentRoot;
         [SerializeField] private Button backButton;
 
         private void Start()
@@ -29,10 +28,8 @@ namespace ChargeRush.UI
                 return;
             }
 
-            for (var i = contentRoot.childCount - 1; i >= 0; i--)
-            {
-                Destroy(contentRoot.GetChild(i).gameObject);
-            }
+            var listRoot = UiScrollList.Ensure(contentRoot);
+            UiScrollList.ClearRows(listRoot);
 
             var levels = GameBootstrap.Instance.Catalog.StoryLevels;
             var previousCompleted = true;
@@ -45,15 +42,16 @@ namespace ChargeRush.UI
                 var unlocked = i == 0 || previousCompleted;
                 previousCompleted = record.Completed;
 
-                var row = new GameObject($"Level_{level.LevelNumber}", typeof(RectTransform));
-                row.transform.SetParent(contentRoot, false);
-                var text = row.AddComponent<TextMeshProUGUI>();
-                text.fontSize = 30f;
-                text.text = unlocked
-                    ? $"{level.LevelNumber}. {level.LevelName}  Stars {record.Stars}/3"
-                    : $"{level.LevelNumber}. Locked";
+                var label = UiScrollList.CreateTextRow(
+                    listRoot,
+                    $"Level_{level.LevelNumber}",
+                    unlocked
+                        ? $"{level.LevelNumber}. {level.LevelName}  Stars {record.Stars}/3"
+                        : $"{level.LevelNumber}. Locked",
+                    30f,
+                    44f);
 
-                var button = row.AddComponent<Button>();
+                var button = label.gameObject.AddComponent<Button>();
                 button.interactable = unlocked;
                 var captured = level;
                 button.onClick.AddListener(() => GameBootstrap.Instance.PlayStoryLevel(captured));
