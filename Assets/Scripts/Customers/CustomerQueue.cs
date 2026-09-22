@@ -7,6 +7,14 @@ namespace ChargeRush.Customers
     /// <summary>Reusable visible-slot and overflow queue manager.</summary>
     public sealed class CustomerQueue : MonoBehaviour
     {
+        // Stand behind the counter (higher Y), packed toward the left so the
+        // row stays on-screen on narrower iPad landscape frustums.
+        private const float SlotStartX = -3.1f;
+        private const float SlotSpacingX = 1.85f;
+        private const float SlotLocalY = -0.35f;
+        private const float OverflowLocalX = -6.2f;
+        private const float OverflowSpacingX = 0.5f;
+
         [SerializeField] private Transform slotRoot;
         [SerializeField] private Transform overflowRoot;
 
@@ -81,8 +89,8 @@ namespace ChargeRush.Customers
                 {
                     var overflowIndex = i - visibleCapacity;
                     var pos = overflowRoot != null
-                        ? overflowRoot.position + Vector3.left * overflowIndex * 0.55f
-                        : transform.position + Vector3.left * (2.5f + overflowIndex * 0.55f);
+                        ? overflowRoot.position + Vector3.left * overflowIndex * OverflowSpacingX
+                        : transform.position + Vector3.left * (2.5f + overflowIndex * OverflowSpacingX);
                     customer.AssignSlot(i, pos, true);
                 }
             }
@@ -101,16 +109,21 @@ namespace ChargeRush.Customers
             {
                 var go = new GameObject("Overflow");
                 go.transform.SetParent(transform, false);
-                go.transform.localPosition = new Vector3(-7.5f, -1.1f, 0f);
                 overflowRoot = go.transform;
             }
+
+            overflowRoot.localPosition = new Vector3(OverflowLocalX, SlotLocalY, 0f);
 
             while (visibleSlots.Count < count)
             {
                 var slot = new GameObject($"Slot_{visibleSlots.Count}");
                 slot.transform.SetParent(slotRoot, false);
-                slot.transform.localPosition = new Vector3(-1.4f + visibleSlots.Count * 2.8f, -1.1f, 0f);
                 visibleSlots.Add(slot.transform);
+            }
+
+            for (var i = 0; i < visibleSlots.Count; i++)
+            {
+                visibleSlots[i].localPosition = new Vector3(SlotStartX + i * SlotSpacingX, SlotLocalY, 0f);
             }
         }
     }

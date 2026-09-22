@@ -32,7 +32,7 @@ namespace ChargeRush.Devices
         private Vector3 scaleBeforeDrag;
 
         // Docked phones should sit in the cradle, not cover the whole pod.
-        private const float DockedWorldScaleFactor = 0.4f;
+        private const float DockedWorldScaleFactor = 0.8f;
         private static readonly Vector3 DockedLocalOffset = new Vector3(0f, 0.08f, 0f);
 
         private void Awake()

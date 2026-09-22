@@ -228,6 +228,13 @@ namespace ChargeRush.Editor
                 col.size = new Vector2(1.1f, 1.8f);
             }
 
+            var anchor = root.transform.Find("DeviceAnchor");
+            if (anchor != null)
+            {
+                // Keep held devices at chest height so they clear the countertop pods.
+                anchor.localPosition = new Vector3(0.5f, 0.55f, 0f);
+            }
+
             PrefabUtility.SaveAsPrefabAsset(root, path);
             PrefabUtility.UnloadPrefabContents(root);
         }

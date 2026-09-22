@@ -573,7 +573,7 @@ namespace ChargeRush.Editor
             mood.transform.localScale = Vector3.one * 0.25f;
             var anchor = new GameObject("DeviceAnchor");
             anchor.transform.SetParent(go.transform, false);
-            anchor.transform.localPosition = new Vector3(0.55f, 0.1f, 0f);
+            anchor.transform.localPosition = new Vector3(0.5f, 0.55f, 0f);
             var customer = go.GetComponent<CustomerInstance>();
             var so = new SerializedObject(customer);
             so.FindProperty("spriteRenderer").objectReferenceValue = sr;
