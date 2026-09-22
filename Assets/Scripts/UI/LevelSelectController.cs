@@ -49,7 +49,8 @@ namespace ChargeRush.UI
                         ? $"{level.LevelNumber}. {level.LevelName}  Stars {record.Stars}/3"
                         : $"{level.LevelNumber}. Locked",
                     30f,
-                    44f);
+                    44f,
+                    UiTextRole.Heading);
 
                 var button = label.gameObject.AddComponent<Button>();
                 button.interactable = unlocked;

@@ -95,7 +95,13 @@ namespace ChargeRush.UI
             }
         }
 
-        public static TextMeshProUGUI CreateTextRow(Transform listRoot, string name, string text, float fontSize, float height)
+        public static TextMeshProUGUI CreateTextRow(
+            Transform listRoot,
+            string name,
+            string text,
+            float fontSize,
+            float height,
+            UiTextRole role = UiTextRole.Body)
         {
             var row = new GameObject(name, typeof(RectTransform), typeof(LayoutElement), typeof(TextMeshProUGUI));
             row.transform.SetParent(listRoot, false);
@@ -113,6 +119,7 @@ namespace ChargeRush.UI
             label.enableWordWrapping = true;
             label.overflowMode = TextOverflowModes.Ellipsis;
             label.raycastTarget = true;
+            UiFonts.Apply(label, role);
             return label;
         }
     }

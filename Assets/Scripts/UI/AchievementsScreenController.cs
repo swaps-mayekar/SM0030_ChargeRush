@@ -40,7 +40,8 @@ namespace ChargeRush.UI
                     achievement.AchievementId,
                     $"{(unlocked ? "[Done]" : "[ ]")} {achievement.DisplayName}\n{achievement.Description}",
                     26f,
-                    72f);
+                    72f,
+                    UiTextRole.Body);
             }
         }
     }

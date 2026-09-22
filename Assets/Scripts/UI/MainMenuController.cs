@@ -144,7 +144,8 @@ namespace ChargeRush.UI
                         ? $"{upgrade.DisplayName} Lv {level}/{upgrade.MaxLevel} - {cost} CR"
                         : $"{upgrade.DisplayName} MAX",
                     26f,
-                    48f);
+                    48f,
+                    UiTextRole.Heading);
 
                 var button = label.gameObject.AddComponent<Button>();
                 var captured = upgrade;

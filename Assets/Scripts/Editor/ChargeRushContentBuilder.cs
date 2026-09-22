@@ -36,6 +36,7 @@ namespace ChargeRush.Editor
         [MenuItem("ChargeRush/Build All Content")]
         public static void BuildAll()
         {
+            ChargeRushFontBuilder.EnsureFontAssets();
             EnsureFolders();
             var sprites = BuildSprites();
             var devices = BuildDevices(sprites);
@@ -55,6 +56,7 @@ namespace ChargeRush.Editor
                 ChargeRushArtIntegrator.ApplyFinalArt();
             }
 
+            ChargeRushFontBuilder.BuildUiFonts();
             Debug.Log("ChargeRush content build complete.");
         }
 
@@ -686,9 +688,9 @@ namespace ChargeRush.Editor
             CreateEventSystem();
             var canvas = CreateCanvas("MainMenuCanvas");
             var safe = CreateSafeArea(canvas.transform);
-            var title = CreateTMP(safe, "Title", "ChargeRush", 64, new Vector2(0f, 220f));
-            var career = CreateTMP(safe, "Career", "Unemployed", 28, new Vector2(0f, 150f));
-            var credits = CreateTMP(safe, "Credits", "0 CR", 28, new Vector2(0f, 110f));
+            var title = CreateTMP(safe, "Title", "ChargeRush", 64, new Vector2(0f, 220f), UiTextRole.Heading);
+            var career = CreateTMP(safe, "Career", "Unemployed", 28, new Vector2(0f, 150f), UiTextRole.Body);
+            var credits = CreateTMP(safe, "Credits", "0 CR", 28, new Vector2(0f, 110f), UiTextRole.Body);
             var play = CreateButton(safe, "Play", "Play", new Vector2(0f, 40f));
             var levels = CreateButton(safe, "LevelSelect", "Level Select", new Vector2(0f, -20f));
             var challenge = CreateButton(safe, "Challenge", "Challenge Mode", new Vector2(0f, -80f));
@@ -697,7 +699,7 @@ namespace ChargeRush.Editor
             var upgrades = CreateButton(safe, "Upgrades", "Upgrades", new Vector2(160f, -210f));
             var upgradesPanel = CreatePanel(safe, "UpgradesPanel", new Vector2(0f, 0f), new Vector2(700f, 420f));
             upgradesPanel.SetActive(false);
-            CreateTMP(upgradesPanel.transform, "UpgradesTitle", "Upgrades", 36, new Vector2(0f, 170f));
+            CreateTMP(upgradesPanel.transform, "UpgradesTitle", "Upgrades", 36, new Vector2(0f, 170f), UiTextRole.Heading);
             var upgradesContent = CreateListContent(upgradesPanel.transform, new Vector2(640f, 280f));
             upgradesContent.anchoredPosition = new Vector2(0f, 40f);
             var closeUpgrades = CreateButton(upgradesPanel.transform, "CloseUpgrades", "Close", new Vector2(0f, -170f));
@@ -725,7 +727,7 @@ namespace ChargeRush.Editor
             CreateEventSystem();
             var canvas = CreateCanvas("LevelSelectCanvas");
             var safe = CreateSafeArea(canvas.transform);
-            CreateTMP(safe, "Title", "Level Select", 48, new Vector2(0f, 220f));
+            CreateTMP(safe, "Title", "Level Select", 48, new Vector2(0f, 220f), UiTextRole.Heading);
             var content = CreateListContent(safe, new Vector2(900f, 380f));
             var back = CreateButton(safe, "Back", "Back", new Vector2(0f, -230f));
             var controller = canvas.AddComponent<LevelSelectController>();
@@ -743,7 +745,7 @@ namespace ChargeRush.Editor
             CreateEventSystem();
             var canvas = CreateCanvas("AchievementsCanvas");
             var safe = CreateSafeArea(canvas.transform);
-            CreateTMP(safe, "Title", "Achievements", 48, new Vector2(0f, 220f));
+            CreateTMP(safe, "Title", "Achievements", 48, new Vector2(0f, 220f), UiTextRole.Heading);
             var content = CreateListContent(safe, new Vector2(900f, 380f));
             var back = CreateButton(safe, "Back", "Back", new Vector2(0f, -230f));
             var controller = canvas.AddComponent<AchievementsScreenController>();
@@ -805,37 +807,37 @@ namespace ChargeRush.Editor
 
             var canvas = CreateCanvas("GameplayCanvas");
             var safe = CreateSafeArea(canvas.transform);
-            var earnings = CreateTMP(safe, "Earnings", "Credits: 0", 28, new Vector2(-420f, 200f));
+            var earnings = CreateTMP(safe, "Earnings", "Credits: 0", 28, new Vector2(-420f, 200f), UiTextRole.Body);
             earnings.alignment = TextAlignmentOptions.Left;
-            var target = CreateTMP(safe, "Target", "Target: 0", 28, new Vector2(-420f, 160f));
+            var target = CreateTMP(safe, "Target", "Target: 0", 28, new Vector2(-420f, 160f), UiTextRole.Body);
             target.alignment = TextAlignmentOptions.Left;
-            var mistakes = CreateTMP(safe, "Mistakes", "Mistakes: 0 / 3", 28, new Vector2(320f, 200f));
+            var mistakes = CreateTMP(safe, "Mistakes", "Mistakes: 0 / 3", 28, new Vector2(320f, 200f), UiTextRole.Body);
             mistakes.alignment = TextAlignmentOptions.Left;
-            var active = CreateTMP(safe, "Active", "Charging: 0", 24, new Vector2(320f, 160f));
+            var active = CreateTMP(safe, "Active", "Charging: 0", 24, new Vector2(320f, 160f), UiTextRole.Body);
             active.alignment = TextAlignmentOptions.Left;
-            var tutorialText = CreateTMP(safe, "Tutorial", "", 32, new Vector2(0f, 120f));
-            var payment = CreateTMP(safe, "PaymentPopup", "", 40, new Vector2(0f, 40f));
+            var tutorialText = CreateTMP(safe, "Tutorial", "", 32, new Vector2(0f, 120f), UiTextRole.Body);
+            var payment = CreateTMP(safe, "PaymentPopup", "", 40, new Vector2(0f, 40f), UiTextRole.Heading);
             payment.gameObject.SetActive(false);
             var pauseBtn = CreateButton(safe, "Pause", "Pause", new Vector2(520f, 200f));
 
             var pausePanel = CreatePanel(safe, "PausePanel", Vector2.zero, new Vector2(480f, 280f));
             pausePanel.SetActive(false);
-            CreateTMP(pausePanel.transform, "PauseTitle", "Paused", 40, new Vector2(0f, 80f));
+            CreateTMP(pausePanel.transform, "PauseTitle", "Paused", 40, new Vector2(0f, 80f), UiTextRole.Heading);
             var resume = CreateButton(pausePanel.transform, "Resume", "Resume", new Vector2(0f, 0f));
             var pauseLevels = CreateButton(pausePanel.transform, "PauseLevels", "Level Select", new Vector2(0f, -70f));
 
             var completePanel = CreatePanel(safe, "CompletePanel", Vector2.zero, new Vector2(520f, 340f));
             completePanel.SetActive(false);
-            CreateTMP(completePanel.transform, "CompleteTitle", "Level Complete", 40, new Vector2(0f, 120f));
-            var completeStats = CreateTMP(completePanel.transform, "CompleteStats", "", 28, new Vector2(0f, 40f));
-            var stars = CreateTMP(completePanel.transform, "Stars", "Stars: 0 / 3", 30, new Vector2(0f, -20f));
+            CreateTMP(completePanel.transform, "CompleteTitle", "Level Complete", 40, new Vector2(0f, 120f), UiTextRole.Heading);
+            var completeStats = CreateTMP(completePanel.transform, "CompleteStats", "", 28, new Vector2(0f, 40f), UiTextRole.Body);
+            var stars = CreateTMP(completePanel.transform, "Stars", "Stars: 0 / 3", 30, new Vector2(0f, -20f), UiTextRole.Heading);
             var cont = CreateButton(completePanel.transform, "Continue", "Continue", new Vector2(-110f, -110f));
             var replay = CreateButton(completePanel.transform, "Replay", "Replay", new Vector2(110f, -110f));
 
             var failPanel = CreatePanel(safe, "FailPanel", Vector2.zero, new Vector2(520f, 300f));
             failPanel.SetActive(false);
-            CreateTMP(failPanel.transform, "FailTitle", "Level Failed", 40, new Vector2(0f, 100f));
-            var failReason = CreateTMP(failPanel.transform, "FailReason", "", 28, new Vector2(0f, 30f));
+            CreateTMP(failPanel.transform, "FailTitle", "Level Failed", 40, new Vector2(0f, 100f), UiTextRole.Heading);
+            var failReason = CreateTMP(failPanel.transform, "FailReason", "", 28, new Vector2(0f, 30f), UiTextRole.Body);
             var failRetry = CreateButton(failPanel.transform, "FailRetry", "Retry", new Vector2(-110f, -90f));
             var failLevels = CreateButton(failPanel.transform, "FailLevels", "Level Select", new Vector2(110f, -90f));
 
@@ -960,7 +962,7 @@ namespace ChargeRush.Editor
             return safe.transform;
         }
 
-        private static TextMeshProUGUI CreateTMP(Transform parent, string name, string text, float size, Vector2 pos)
+        private static TextMeshProUGUI CreateTMP(Transform parent, string name, string text, float size, Vector2 pos, UiTextRole role = UiTextRole.Body)
         {
             var go = new GameObject(name, typeof(RectTransform), typeof(TextMeshProUGUI));
             go.transform.SetParent(parent, false);
@@ -972,6 +974,7 @@ namespace ChargeRush.Editor
             tmp.fontSize = size;
             tmp.alignment = TextAlignmentOptions.Center;
             tmp.color = Color.white;
+            UiFonts.Apply(tmp, role);
             return tmp;
         }
 
@@ -983,7 +986,7 @@ namespace ChargeRush.Editor
             rt.sizeDelta = new Vector2(260f, 56f);
             rt.anchoredPosition = pos;
             go.GetComponent<Image>().color = new Color(0.18f, 0.45f, 0.62f);
-            var text = CreateTMP(go.transform, "Label", label, 26, Vector2.zero);
+            var text = CreateTMP(go.transform, "Label", label, 26, Vector2.zero, UiTextRole.Heading);
             text.rectTransform.sizeDelta = new Vector2(240f, 50f);
             return go.GetComponent<Button>();
         }
