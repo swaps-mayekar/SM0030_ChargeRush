@@ -668,6 +668,11 @@ namespace ChargeRush.Editor
 
         private static void BuildBootScene(GameCatalog catalog)
         {
+            if (ChargeRushAuthoredScenes.TryPreserve(ChargeRushAuthoredScenes.Boot, "rebuild"))
+            {
+                return;
+            }
+
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             var cam = CreateCamera();
             var bootstrap = new GameObject("Bootstrap");
@@ -678,11 +683,16 @@ namespace ChargeRush.Editor
             var so = new SerializedObject(bootstrap.GetComponent<GameBootstrap>());
             so.FindProperty("catalog").objectReferenceValue = catalog;
             so.ApplyModifiedPropertiesWithoutUndo();
-            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/0_Boot.unity");
+            EditorSceneManager.SaveScene(scene, ChargeRushAuthoredScenes.Boot);
         }
 
         private static void BuildMenuScene(GameCatalog catalog)
         {
+            if (ChargeRushAuthoredScenes.TryPreserve(ChargeRushAuthoredScenes.MainMenu, "rebuild"))
+            {
+                return;
+            }
+
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             CreateCamera();
             CreateEventSystem();
@@ -717,11 +727,51 @@ namespace ChargeRush.Editor
             so.FindProperty("upgradesContent").objectReferenceValue = upgradesContent;
             so.FindProperty("closeUpgradesButton").objectReferenceValue = closeUpgrades;
             so.ApplyModifiedPropertiesWithoutUndo();
-            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/1_MainMenu.unity");
+            EditorSceneManager.SaveScene(scene, ChargeRushAuthoredScenes.MainMenu);
+        }
+
+        [MenuItem("ChargeRush/Force Rebuild All Scenes")]
+        public static void ForceRebuildAllScenes()
+        {
+            if (!EditorUtility.DisplayDialog(
+                    "Force rebuild all scenes?",
+                    "This will overwrite every scene under Assets/Scenes/ with generated placeholder layouts.\n\nAll hand-authored UI will be lost.",
+                    "Overwrite All",
+                    "Cancel"))
+            {
+                return;
+            }
+
+            var catalog = AssetDatabase.LoadAssetAtPath<GameCatalog>($"{ResourcesRoot}/GameCatalog.asset");
+            if (catalog == null)
+            {
+                Debug.LogError("ChargeRush: Missing GameCatalog; cannot force-rebuild scenes.");
+                return;
+            }
+
+            ChargeRushAuthoredScenes.DeleteAllForForceRebuild();
+            ChargeRushFontBuilder.EnsureFontAssets();
+
+            var sprites = BuildSprites();
+            var prefabs = BuildPrefabs(sprites);
+            BuildBootScene(catalog);
+            BuildMenuScene(catalog);
+            BuildLevelSelectScene();
+            BuildAchievementsScene();
+            BuildGameplayScene(catalog, prefabs, sprites);
+            ConfigureBuildSettings();
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            Debug.Log("ChargeRush: All scenes force-rebuilt.");
         }
 
         private static void BuildLevelSelectScene()
         {
+            if (ChargeRushAuthoredScenes.TryPreserve(ChargeRushAuthoredScenes.LevelSelect, "rebuild"))
+            {
+                return;
+            }
+
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             CreateCamera();
             CreateEventSystem();
@@ -735,11 +785,16 @@ namespace ChargeRush.Editor
             so.FindProperty("contentRoot").objectReferenceValue = content;
             so.FindProperty("backButton").objectReferenceValue = back;
             so.ApplyModifiedPropertiesWithoutUndo();
-            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/2_LevelSelect.unity");
+            EditorSceneManager.SaveScene(scene, ChargeRushAuthoredScenes.LevelSelect);
         }
 
         private static void BuildAchievementsScene()
         {
+            if (ChargeRushAuthoredScenes.TryPreserve(ChargeRushAuthoredScenes.Achievements, "rebuild"))
+            {
+                return;
+            }
+
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             CreateCamera();
             CreateEventSystem();
@@ -753,7 +808,7 @@ namespace ChargeRush.Editor
             so.FindProperty("contentRoot").objectReferenceValue = content;
             so.FindProperty("backButton").objectReferenceValue = back;
             so.ApplyModifiedPropertiesWithoutUndo();
-            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/4_Achievements.unity");
+            EditorSceneManager.SaveScene(scene, ChargeRushAuthoredScenes.Achievements);
         }
 
         private static RectTransform CreateListContent(Transform parent, Vector2 size)
@@ -771,6 +826,11 @@ namespace ChargeRush.Editor
 
         private static void BuildGameplayScene(GameCatalog catalog, PrefabSet prefabs, Dictionary<string, Sprite> sprites)
         {
+            if (ChargeRushAuthoredScenes.TryPreserve(ChargeRushAuthoredScenes.Gameplay, "rebuild"))
+            {
+                return;
+            }
+
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             var cam = CreateCamera();
             CreateEventSystem();
@@ -884,19 +944,12 @@ namespace ChargeRush.Editor
             tutorialSo.FindProperty("highlightArrow").objectReferenceValue = arrow;
             tutorialSo.ApplyModifiedPropertiesWithoutUndo();
 
-            EditorSceneManager.SaveScene(scene, $"{SceneRoot}/3_Gameplay.unity");
+            EditorSceneManager.SaveScene(scene, ChargeRushAuthoredScenes.Gameplay);
         }
 
         private static void ConfigureBuildSettings()
         {
-            var scenes = new[]
-            {
-                $"{SceneRoot}/0_Boot.unity",
-                $"{SceneRoot}/1_MainMenu.unity",
-                $"{SceneRoot}/2_LevelSelect.unity",
-                $"{SceneRoot}/3_Gameplay.unity",
-                $"{SceneRoot}/4_Achievements.unity"
-            };
+            var scenes = ChargeRushAuthoredScenes.All;
 
             var list = new EditorBuildSettingsScene[scenes.Length];
             for (var i = 0; i < scenes.Length; i++)

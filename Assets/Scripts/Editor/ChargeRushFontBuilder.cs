@@ -22,13 +22,7 @@ namespace ChargeRush.Editor
         private const string HeadingAssetPath = ResourcesFontsRoot + "/OutfitBold SDF.asset";
         private const string BodyAssetPath = ResourcesFontsRoot + "/DMSansRegular SDF.asset";
 
-        private static readonly string[] ScenePaths =
-        {
-            "Assets/Scenes/1_MainMenu.unity",
-            "Assets/Scenes/2_LevelSelect.unity",
-            "Assets/Scenes/3_Gameplay.unity",
-            "Assets/Scenes/4_Achievements.unity"
-        };
+        private static readonly string[] ScenePaths = ChargeRushAuthoredScenes.All;
 
         private static readonly HashSet<string> HeadingNames = new HashSet<string>
         {
@@ -170,6 +164,11 @@ namespace ChargeRush.Editor
             {
                 var path = ScenePaths[i];
                 if (!File.Exists(path))
+                {
+                    continue;
+                }
+
+                if (ChargeRushAuthoredScenes.TryPreserve(path, "font apply"))
                 {
                     continue;
                 }

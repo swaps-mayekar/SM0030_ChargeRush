@@ -324,7 +324,12 @@ namespace ChargeRush.Editor
 
         private static void UpdateGameplayScene()
         {
-            var scene = EditorSceneManager.OpenScene("Assets/Scenes/3_Gameplay.unity");
+            if (ChargeRushAuthoredScenes.TryPreserve(ChargeRushAuthoredScenes.Gameplay, "art integrator"))
+            {
+                return;
+            }
+
+            var scene = EditorSceneManager.OpenScene(ChargeRushAuthoredScenes.Gameplay);
             var bg = GameObject.Find("Background");
             if (bg != null)
             {
@@ -358,7 +363,12 @@ namespace ChargeRush.Editor
 
         private static void UpdateMainMenuScene()
         {
-            var scene = EditorSceneManager.OpenScene("Assets/Scenes/1_MainMenu.unity");
+            if (ChargeRushAuthoredScenes.TryPreserve(ChargeRushAuthoredScenes.MainMenu, "art integrator"))
+            {
+                return;
+            }
+
+            var scene = EditorSceneManager.OpenScene(ChargeRushAuthoredScenes.MainMenu);
             var canvas = Object.FindFirstObjectByType<Canvas>();
             if (canvas == null)
             {
@@ -399,7 +409,12 @@ namespace ChargeRush.Editor
 
         private static void UpdateHudChrome()
         {
-            var scene = EditorSceneManager.OpenScene("Assets/Scenes/3_Gameplay.unity");
+            if (ChargeRushAuthoredScenes.TryPreserve(ChargeRushAuthoredScenes.Gameplay, "HUD chrome"))
+            {
+                return;
+            }
+
+            var scene = EditorSceneManager.OpenScene(ChargeRushAuthoredScenes.Gameplay);
             var canvas = Object.FindFirstObjectByType<Canvas>();
             if (canvas == null)
             {
