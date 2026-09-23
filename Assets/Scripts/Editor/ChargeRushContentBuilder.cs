@@ -1051,7 +1051,10 @@ namespace ChargeRush.Editor
             var rt = go.GetComponent<RectTransform>();
             rt.sizeDelta = size;
             rt.anchoredPosition = pos;
-            go.GetComponent<Image>().color = new Color(0.08f, 0.1f, 0.14f, 0.92f);
+            var image = go.GetComponent<Image>();
+            image.sprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Resources/Art/UI/result_panel_opaque.png");
+            image.type = Image.Type.Sliced;
+            image.color = Color.white;
             return go;
         }
     }

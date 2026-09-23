@@ -465,7 +465,7 @@ namespace ChargeRush.Editor
             }
 
             var image = panel.GetComponent<Image>();
-            var sprite = LoadSprite($"{ArtRoot}/UI/panel_final.png");
+            var sprite = LoadSprite("Assets/Resources/Art/UI/result_panel_opaque.png");
             if (image != null && sprite != null)
             {
                 image.sprite = sprite;

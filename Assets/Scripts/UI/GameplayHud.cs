@@ -36,10 +36,6 @@ namespace ChargeRush.UI
         private Coroutine resultTransition;
 
         private static readonly Color ModalScrim = new Color(0.015f, 0.035f, 0.055f, 0.82f);
-        private static readonly Color SuccessAccent = new Color(1f, 0.78f, 0.24f, 1f);
-        private static readonly Color FailureAccent = new Color(1f, 0.36f, 0.35f, 1f);
-        private static readonly Color PrimaryText = new Color(0.96f, 0.99f, 1f, 1f);
-        private static readonly Color MutedText = new Color(0.67f, 0.8f, 0.84f, 1f);
 
         private void Awake()
         {
@@ -178,9 +174,9 @@ namespace ChargeRush.UI
                 if (completeStatsText != null)
                 {
                     completeStatsText.text =
-                        $"<color=#{ColorUtility.ToHtmlStringRGB(MutedText)}>EARNINGS</color>  {CreditUi.Format(eco.CurrentEarnings)}" +
-                        $"     <color=#{ColorUtility.ToHtmlStringRGB(MutedText)}>GUESTS SERVED</color>  {eco.CustomersServed}\n" +
-                        $"<color=#{ColorUtility.ToHtmlStringRGB(MutedText)}>SERVICE MISTAKES</color>  {eco.Mistakes}";
+                        $"<color=#{ColorUtility.ToHtmlStringRGB(PanelTheme.MutedColor)}>EARNINGS</color>  {CreditUi.Format(eco.CurrentEarnings)}" +
+                        $"     <color=#{ColorUtility.ToHtmlStringRGB(PanelTheme.MutedColor)}>GUESTS SERVED</color>  {eco.CustomersServed}\n" +
+                        $"<color=#{ColorUtility.ToHtmlStringRGB(PanelTheme.MutedColor)}>SERVICE MISTAKES</color>  {eco.Mistakes}";
                 }
             }
         }
@@ -213,8 +209,8 @@ namespace ChargeRush.UI
             if (failReasonText != null)
             {
                 failReasonText.text = reason == MistakeReason.CustomerLeft
-                    ? "Too many guests left unhappy.\n<color=#A8C9D2>Serve waiting guests before their patience runs out.</color>"
-                    : "Too many service mistakes.\n<color=#A8C9D2>Match each device with the correct charger.</color>";
+                    ? "Too many guests left unhappy.\n<color=#634529>Serve waiting guests before their patience runs out.</color>"
+                    : "Too many service mistakes.\n<color=#634529>Match each device with the correct charger.</color>";
             }
         }
 
@@ -275,32 +271,47 @@ namespace ChargeRush.UI
 
         private void ConfigureResultScreens()
         {
-            ConfigureResultPanel(completePanel, new Vector2(780f, 560f));
-            ConfigureResultPanel(failPanel, new Vector2(760f, 450f));
+            ConfigurePausePanel();
+            ConfigureResultPanel(completePanel, new Vector2(900f, 500f));
+            ConfigureResultPanel(failPanel, new Vector2(820f, 455f));
 
             var completeTitle = FindText(completePanel, "CompleteTitle");
-            StyleText(completeTitle, new Vector2(0f, 178f), new Vector2(660f, 90f), 52f, SuccessAccent, FontStyles.Bold);
-            StyleText(completeStatsText, new Vector2(0f, 62f), new Vector2(650f, 125f), 27f, PrimaryText, FontStyles.Normal);
+            StyleText(completeTitle, new Vector2(0f, 184f), new Vector2(650f, 72f), 48f, PanelTheme.TitleColor, FontStyles.Bold);
+            StyleText(completeStatsText, new Vector2(0f, 64f), new Vector2(690f, 115f), 27f, PanelTheme.BodyColor, FontStyles.Normal);
             if (completeStatsText != null)
             {
                 completeStatsText.lineSpacing = 12f;
             }
 
-            StyleText(starsText, new Vector2(0f, -31f), new Vector2(500f, 48f), 20f, MutedText, FontStyles.Bold);
+            StyleText(starsText, new Vector2(0f, -26f), new Vector2(500f, 48f), 20f, PanelTheme.MutedColor, FontStyles.Bold);
             ConfigureStars();
-            StyleResultButton(continueButton, new Vector2(-155f, -202f), new Vector2(280f, 76f), true);
-            StyleResultButton(retryButton, new Vector2(155f, -202f), new Vector2(280f, 76f), false);
+            StyleResultButton(continueButton, new Vector2(-155f, -181f), new Vector2(280f, 72f), true);
+            StyleResultButton(retryButton, new Vector2(155f, -181f), new Vector2(280f, 72f), false);
 
             var failTitle = FindText(failPanel, "FailTitle");
-            StyleText(failTitle, new Vector2(0f, 126f), new Vector2(650f, 90f), 50f, FailureAccent, FontStyles.Bold);
-            StyleText(failReasonText, new Vector2(0f, 22f), new Vector2(620f, 120f), 27f, PrimaryText, FontStyles.Normal);
+            StyleText(failTitle, new Vector2(0f, 157f), new Vector2(620f, 72f), 46f, PanelTheme.FailureTitleColor, FontStyles.Bold);
+            StyleText(failReasonText, new Vector2(0f, 35f), new Vector2(640f, 116f), 27f, PanelTheme.BodyColor, FontStyles.Normal);
             if (failReasonText != null)
             {
                 failReasonText.lineSpacing = 8f;
             }
 
-            StyleResultButton(failRetryButton, new Vector2(-155f, -132f), new Vector2(280f, 76f), true);
-            StyleResultButton(failLevelSelectButton, new Vector2(155f, -132f), new Vector2(280f, 76f), false);
+            StyleResultButton(failRetryButton, new Vector2(-155f, -139f), new Vector2(280f, 72f), true);
+            StyleResultButton(failLevelSelectButton, new Vector2(155f, -139f), new Vector2(280f, 72f), false);
+        }
+
+        private void ConfigurePausePanel()
+        {
+            PanelTheme.Apply(pausePanel, new Vector2(680f, 378f));
+            StyleText(
+                FindText(pausePanel, "PauseTitle"),
+                new Vector2(0f, 126f),
+                new Vector2(500f, 66f),
+                44f,
+                PanelTheme.TitleColor,
+                FontStyles.Bold);
+            StyleResultButton(resumeButton, new Vector2(0f, 18f), new Vector2(280f, 70f), true);
+            StyleResultButton(levelSelectButton, new Vector2(0f, -70f), new Vector2(280f, 70f), false);
         }
 
         private static void ConfigureResultPanel(GameObject panel, Vector2 cardSize)
@@ -320,7 +331,7 @@ namespace ChargeRush.UI
             rect.offsetMax = Vector2.zero;
 
             var panelImage = panel.GetComponent<Image>();
-            var frameSprite = Resources.Load<Sprite>("Art/UI/result_panel_opaque");
+            var frameSprite = PanelTheme.PanelSprite;
             if (frameSprite == null && panelImage != null)
             {
                 frameSprite = panelImage.sprite;
@@ -373,7 +384,7 @@ namespace ChargeRush.UI
                 {
                     image.raycastTarget = false;
                     image.preserveAspect = true;
-                    image.color = new Color(0.35f, 0.43f, 0.46f, 0.42f);
+                    image.color = new Color(0.29f, 0.2f, 0.12f, 0.35f);
                     resultStars[i] = image;
                 }
             }
@@ -406,7 +417,7 @@ namespace ChargeRush.UI
             rect.anchoredPosition = position;
             rect.sizeDelta = size;
             image.sprite = sprite;
-            image.type = Image.Type.Simple;
+            image.type = Image.Type.Sliced;
             image.color = color;
             image.raycastTarget = false;
         }
