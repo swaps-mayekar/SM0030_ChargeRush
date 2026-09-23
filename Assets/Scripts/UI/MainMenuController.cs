@@ -24,7 +24,6 @@ namespace ChargeRush.UI
 
         private void Start()
         {
-            ConfigureUpgradesPanel();
             Refresh();
             if (playButton != null) playButton.onClick.AddListener(OnPlay);
             if (levelSelectButton != null) levelSelectButton.onClick.AddListener(() => SceneLoader.Instance.Load(SceneLoader.LevelSelectScene));
@@ -168,29 +167,5 @@ namespace ChargeRush.UI
             }
         }
 
-        private void ConfigureUpgradesPanel()
-        {
-            if (upgradesPanel == null)
-            {
-                return;
-            }
-
-            PanelTheme.Apply(upgradesPanel, new Vector2(900f, 500f));
-
-            var title = upgradesPanel.transform.Find("UpgradesTitle");
-            if (title != null)
-            {
-                var titleText = title.GetComponent<TextMeshProUGUI>();
-                PanelTheme.ApplyText(titleText, PanelTheme.TitleColor);
-                titleText.fontSize = 44f;
-                titleText.fontStyle = FontStyles.Bold;
-                titleText.rectTransform.anchoredPosition = new Vector2(0f, 185f);
-            }
-
-            if (closeUpgradesButton != null)
-            {
-                closeUpgradesButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -190f);
-            }
-        }
     }
 }

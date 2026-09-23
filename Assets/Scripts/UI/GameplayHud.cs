@@ -35,12 +35,9 @@ namespace ChargeRush.UI
         private Image[] resultStars;
         private Coroutine resultTransition;
 
-        private static readonly Color ModalScrim = new Color(0.015f, 0.035f, 0.055f, 0.82f);
-
         private void Awake()
         {
-            ConfigureResponsiveLayout();
-            ConfigureResultScreens();
+            CacheResultStars();
         }
 
         private void OnEnable()
@@ -255,111 +252,7 @@ namespace ChargeRush.UI
             SceneLoader.Instance.Load(SceneLoader.LevelSelectScene);
         }
 
-        private void ConfigureResponsiveLayout()
-        {
-            SetTopAnchor(earningsText != null ? earningsText.rectTransform : null, new Vector2(72f, -38f), new Vector2(280f, 48f), false);
-            SetTopAnchor(targetText != null ? targetText.rectTransform : null, new Vector2(72f, -82f), new Vector2(280f, 48f), false);
-            SetTopAnchor(mistakesText != null ? mistakesText.rectTransform : null, new Vector2(-500f, -38f), new Vector2(320f, 48f), true);
-            SetTopAnchor(activeChargesText != null ? activeChargesText.rectTransform : null, new Vector2(-500f, -82f), new Vector2(320f, 48f), true);
-            SetTopAnchor(tutorialText != null ? tutorialText.rectTransform : null, new Vector2(0f, -112f), new Vector2(680f, 64f), null);
-            SetTopAnchor(pauseButton != null ? pauseButton.GetComponent<RectTransform>() : null, new Vector2(-105f, -38f), new Vector2(170f, 52f), true);
-
-            var safeArea = transform.Find("SafeArea");
-            ConfigureHudIcon(safeArea != null ? safeArea.Find("CreditIcon") : null, new Vector2(32f, -38f), false);
-            ConfigureHudIcon(safeArea != null ? safeArea.Find("MistakeIcon") : null, new Vector2(-540f, -38f), true);
-        }
-
-        private void ConfigureResultScreens()
-        {
-            ConfigurePausePanel();
-            ConfigureResultPanel(completePanel, new Vector2(900f, 500f));
-            ConfigureResultPanel(failPanel, new Vector2(820f, 455f));
-
-            var completeTitle = FindText(completePanel, "CompleteTitle");
-            StyleText(completeTitle, new Vector2(0f, 184f), new Vector2(650f, 72f), 48f, PanelTheme.TitleColor, FontStyles.Bold);
-            StyleText(completeStatsText, new Vector2(0f, 64f), new Vector2(690f, 115f), 27f, PanelTheme.BodyColor, FontStyles.Normal);
-            if (completeStatsText != null)
-            {
-                completeStatsText.lineSpacing = 12f;
-            }
-
-            StyleText(starsText, new Vector2(0f, -26f), new Vector2(500f, 48f), 20f, PanelTheme.MutedColor, FontStyles.Bold);
-            ConfigureStars();
-            StyleResultButton(continueButton, new Vector2(-155f, -181f), new Vector2(280f, 72f), true);
-            StyleResultButton(retryButton, new Vector2(155f, -181f), new Vector2(280f, 72f), false);
-
-            var failTitle = FindText(failPanel, "FailTitle");
-            StyleText(failTitle, new Vector2(0f, 157f), new Vector2(620f, 72f), 46f, PanelTheme.FailureTitleColor, FontStyles.Bold);
-            StyleText(failReasonText, new Vector2(0f, 35f), new Vector2(640f, 116f), 27f, PanelTheme.BodyColor, FontStyles.Normal);
-            if (failReasonText != null)
-            {
-                failReasonText.lineSpacing = 8f;
-            }
-
-            StyleResultButton(failRetryButton, new Vector2(-155f, -139f), new Vector2(280f, 72f), true);
-            StyleResultButton(failLevelSelectButton, new Vector2(155f, -139f), new Vector2(280f, 72f), false);
-        }
-
-        private void ConfigurePausePanel()
-        {
-            PanelTheme.Apply(pausePanel, new Vector2(680f, 378f));
-            StyleText(
-                FindText(pausePanel, "PauseTitle"),
-                new Vector2(0f, 126f),
-                new Vector2(500f, 66f),
-                44f,
-                PanelTheme.TitleColor,
-                FontStyles.Bold);
-            StyleResultButton(resumeButton, new Vector2(0f, 18f), new Vector2(280f, 70f), true);
-            StyleResultButton(levelSelectButton, new Vector2(0f, -70f), new Vector2(280f, 70f), false);
-        }
-
-        private static void ConfigureResultPanel(GameObject panel, Vector2 cardSize)
-        {
-            if (panel == null)
-            {
-                return;
-            }
-
-            var rect = panel.GetComponent<RectTransform>();
-            rect.anchorMin = Vector2.zero;
-            rect.anchorMax = Vector2.one;
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = Vector2.zero;
-            rect.sizeDelta = Vector2.zero;
-            rect.offsetMin = Vector2.zero;
-            rect.offsetMax = Vector2.zero;
-
-            var panelImage = panel.GetComponent<Image>();
-            var frameSprite = PanelTheme.PanelSprite;
-            if (frameSprite == null && panelImage != null)
-            {
-                frameSprite = panelImage.sprite;
-            }
-
-            if (panelImage != null)
-            {
-                panelImage.sprite = null;
-                panelImage.color = ModalScrim;
-                panelImage.raycastTarget = true;
-            }
-
-            var panelArt = EnsureLayer(panel.transform, "ResultPanelArt", 0);
-            ConfigureLayer(panelArt, cardSize, Vector2.zero, Color.white, frameSprite);
-            panelArt.raycastTarget = false;
-
-            var group = panel.GetComponent<CanvasGroup>();
-            if (group == null)
-            {
-                group = panel.AddComponent<CanvasGroup>();
-            }
-
-            group.alpha = 0f;
-            group.interactable = false;
-            group.blocksRaycasts = false;
-        }
-
-        private void ConfigureStars()
+        private void CacheResultStars()
         {
             if (completePanel == null)
             {
@@ -376,119 +269,11 @@ namespace ChargeRush.UI
                     continue;
                 }
 
-                var rect = star as RectTransform;
-                rect.anchoredPosition = new Vector2(-92f + i * 92f, -101f);
-                rect.sizeDelta = new Vector2(76f, 76f);
                 var image = star.GetComponent<Image>();
                 if (image != null)
                 {
-                    image.raycastTarget = false;
-                    image.preserveAspect = true;
-                    image.color = new Color(0.29f, 0.2f, 0.12f, 0.35f);
                     resultStars[i] = image;
                 }
-            }
-        }
-
-        private static Image EnsureLayer(Transform parent, string name, int siblingIndex)
-        {
-            var existing = parent.Find(name);
-            GameObject layer;
-            if (existing != null)
-            {
-                layer = existing.gameObject;
-            }
-            else
-            {
-                layer = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-                layer.transform.SetParent(parent, false);
-            }
-
-            layer.transform.SetSiblingIndex(Mathf.Clamp(siblingIndex, 0, parent.childCount - 1));
-            return layer.GetComponent<Image>();
-        }
-
-        private static void ConfigureLayer(Image image, Vector2 size, Vector2 position, Color color, Sprite sprite)
-        {
-            var rect = image.rectTransform;
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = position;
-            rect.sizeDelta = size;
-            image.sprite = sprite;
-            image.type = Image.Type.Sliced;
-            image.color = color;
-            image.raycastTarget = false;
-        }
-
-        private static TextMeshProUGUI FindText(GameObject root, string childName)
-        {
-            if (root == null)
-            {
-                return null;
-            }
-
-            var child = root.transform.Find(childName);
-            return child != null ? child.GetComponent<TextMeshProUGUI>() : null;
-        }
-
-        private static void StyleText(
-            TextMeshProUGUI text,
-            Vector2 position,
-            Vector2 size,
-            float fontSize,
-            Color color,
-            FontStyles style)
-        {
-            if (text == null)
-            {
-                return;
-            }
-
-            text.rectTransform.anchoredPosition = position;
-            text.rectTransform.sizeDelta = size;
-            text.fontSize = fontSize;
-            text.fontStyle = style;
-            text.color = color;
-            text.alignment = TextAlignmentOptions.Center;
-            text.textWrappingMode = TextWrappingModes.Normal;
-            text.raycastTarget = false;
-        }
-
-        private static void StyleResultButton(Button button, Vector2 position, Vector2 size, bool primary)
-        {
-            if (button == null)
-            {
-                return;
-            }
-
-            var rect = button.GetComponent<RectTransform>();
-            rect.anchoredPosition = position;
-            rect.sizeDelta = size;
-
-            var image = button.targetGraphic as Image;
-            if (image != null)
-            {
-                image.color = primary ? Color.white : new Color(0.55f, 0.78f, 0.8f, 1f);
-            }
-
-            var colors = button.colors;
-            colors.normalColor = Color.white;
-            colors.highlightedColor = new Color(1.08f, 1.08f, 1.08f, 1f);
-            colors.pressedColor = new Color(0.78f, 0.88f, 0.9f, 1f);
-            colors.disabledColor = new Color(0.45f, 0.5f, 0.52f, 0.55f);
-            colors.fadeDuration = 0.08f;
-            button.colors = colors;
-
-            var label = button.GetComponentInChildren<TextMeshProUGUI>();
-            if (label != null)
-            {
-                label.rectTransform.sizeDelta = size - new Vector2(30f, 12f);
-                label.fontSize = 28f;
-                label.fontStyle = FontStyles.Bold;
-                label.color = primary ? new Color(0.025f, 0.19f, 0.23f, 1f) : Color.white;
-                label.raycastTarget = false;
             }
         }
 
@@ -540,38 +325,5 @@ namespace ChargeRush.UI
             group.blocksRaycasts = true;
         }
 
-        private static void SetTopAnchor(RectTransform rect, Vector2 position, Vector2 size, bool? alignRight)
-        {
-            if (rect == null)
-            {
-                return;
-            }
-
-            var anchor = alignRight.HasValue
-                ? new Vector2(alignRight.Value ? 1f : 0f, 1f)
-                : new Vector2(0.5f, 1f);
-            rect.anchorMin = anchor;
-            rect.anchorMax = anchor;
-            rect.pivot = alignRight.HasValue
-                ? new Vector2(alignRight.Value ? 1f : 0f, 1f)
-                : new Vector2(0.5f, 1f);
-            rect.anchoredPosition = position;
-            rect.sizeDelta = size;
-        }
-
-        private static void ConfigureHudIcon(Transform iconTransform, Vector2 position, bool alignRight)
-        {
-            if (iconTransform == null)
-            {
-                return;
-            }
-
-            SetTopAnchor(iconTransform as RectTransform, position, new Vector2(42f, 42f), alignRight);
-            var image = iconTransform.GetComponent<Image>();
-            if (image != null)
-            {
-                image.raycastTarget = false;
-            }
-        }
     }
 }
