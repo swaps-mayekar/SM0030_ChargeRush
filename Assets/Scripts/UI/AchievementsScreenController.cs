@@ -1,5 +1,6 @@
 using ChargeRush.Core;
 using ChargeRush.Save;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,8 +8,9 @@ namespace ChargeRush.UI
 {
     public sealed class AchievementsScreenController : MonoBehaviour
     {
-        [SerializeField] private RectTransform contentRoot;
         [SerializeField] private Button backButton;
+        [SerializeField] private TextMeshProUGUI progressLabel;
+        [SerializeField] private AchievementCardView[] cards;
 
         private void Start()
         {
@@ -17,31 +19,36 @@ namespace ChargeRush.UI
                 backButton.onClick.AddListener(() => SceneLoader.Instance.Load(SceneLoader.MainMenuScene));
             }
 
-            Build();
+            RefreshCards();
         }
 
-        private void Build()
+        private void RefreshCards()
         {
-            if (contentRoot == null || GameBootstrap.Instance == null || GameBootstrap.Instance.Catalog == null)
+            if (cards == null)
             {
                 return;
             }
 
-            var listRoot = UiScrollList.Ensure(contentRoot);
-            UiScrollList.ClearRows(listRoot);
-
-            var list = GameBootstrap.Instance.Catalog.Achievements;
-            for (var i = 0; i < list.Count; i++)
+            var unlockedCount = 0;
+            for (var i = 0; i < cards.Length; i++)
             {
-                var achievement = list[i];
-                var unlocked = SaveManager.Instance != null && SaveManager.Instance.HasAchievement(achievement.AchievementId);
-                UiScrollList.CreateTextRow(
-                    listRoot,
-                    achievement.AchievementId,
-                    $"{(unlocked ? "[Done]" : "[ ]")} {achievement.DisplayName}\n{achievement.Description}",
-                    26f,
-                    72f,
-                    UiTextRole.Body);
+                var card = cards[i];
+                if (card == null)
+                {
+                    continue;
+                }
+
+                var unlocked = SaveManager.Instance != null
+                    && SaveManager.Instance.HasAchievement(card.AchievementId);
+                card.SetUnlocked(unlocked);
+                if (unlocked)
+                {
+                    unlockedCount++;
+                }
+            }
+            if (progressLabel != null)
+            {
+                progressLabel.text = $"{unlockedCount} / {cards.Length}  UNLOCKED";
             }
         }
     }

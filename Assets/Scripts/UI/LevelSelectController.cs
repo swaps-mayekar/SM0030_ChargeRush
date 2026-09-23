@@ -8,8 +8,8 @@ namespace ChargeRush.UI
 {
     public sealed class LevelSelectController : MonoBehaviour
     {
-        [SerializeField] private RectTransform contentRoot;
         [SerializeField] private Button backButton;
+        [SerializeField] private LevelSelectCardView[] cards;
 
         private void Start()
         {
@@ -18,18 +18,15 @@ namespace ChargeRush.UI
                 backButton.onClick.AddListener(() => SceneLoader.Instance.Load(SceneLoader.MainMenuScene));
             }
 
-            Build();
+            RefreshCards();
         }
 
-        private void Build()
+        private void RefreshCards()
         {
-            if (contentRoot == null || GameBootstrap.Instance == null || GameBootstrap.Instance.Catalog == null)
+            if (cards == null || GameBootstrap.Instance == null || GameBootstrap.Instance.Catalog == null)
             {
                 return;
             }
-
-            var listRoot = UiScrollList.Ensure(contentRoot);
-            UiScrollList.ClearRows(listRoot);
 
             var levels = GameBootstrap.Instance.Catalog.StoryLevels;
             var previousCompleted = true;
@@ -42,21 +39,25 @@ namespace ChargeRush.UI
                 var unlocked = i == 0 || previousCompleted;
                 previousCompleted = record.Completed;
 
-                var label = UiScrollList.CreateTextRow(
-                    listRoot,
-                    $"Level_{level.LevelNumber}",
-                    unlocked
-                        ? $"{level.LevelNumber}. {level.LevelName}  Stars {record.Stars}/3"
-                        : $"{level.LevelNumber}. Locked",
-                    30f,
-                    44f,
-                    UiTextRole.Heading);
-
-                var button = label.gameObject.AddComponent<Button>();
-                button.interactable = unlocked;
-                var captured = level;
-                button.onClick.AddListener(() => GameBootstrap.Instance.PlayStoryLevel(captured));
+                var card = FindCard(level.LevelId);
+                if (card != null)
+                {
+                    card.Bind(level, record, unlocked, selected => GameBootstrap.Instance.PlayStoryLevel(selected));
+                }
             }
+        }
+
+        private LevelSelectCardView FindCard(string levelId)
+        {
+            for (var i = 0; i < cards.Length; i++)
+            {
+                if (cards[i] != null && cards[i].LevelId == levelId)
+                {
+                    return cards[i];
+                }
+            }
+
+            return null;
         }
     }
 }
