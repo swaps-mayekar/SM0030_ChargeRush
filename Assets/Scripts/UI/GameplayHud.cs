@@ -4,6 +4,7 @@ using ChargeRush.Gameplay;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace ChargeRush.UI
@@ -27,8 +28,10 @@ namespace ChargeRush.UI
         [SerializeField] private Button resumeButton;
         [SerializeField] private Button retryButton;
         [SerializeField] private Button failRetryButton;
-        [SerializeField] private Button levelSelectButton;
-        [SerializeField] private Button failLevelSelectButton;
+        [FormerlySerializedAs("levelSelectButton")]
+        [SerializeField] private Button homeButton;
+        [FormerlySerializedAs("failLevelSelectButton")]
+        [SerializeField] private Button failHomeButton;
         [SerializeField] private Button continueButton;
 
         private float paymentPopupTimer;
@@ -54,8 +57,8 @@ namespace ChargeRush.UI
             if (resumeButton != null) resumeButton.onClick.AddListener(OnResume);
             if (retryButton != null) retryButton.onClick.AddListener(OnRetry);
             if (failRetryButton != null) failRetryButton.onClick.AddListener(OnRetry);
-            if (levelSelectButton != null) levelSelectButton.onClick.AddListener(OnLevelSelect);
-            if (failLevelSelectButton != null) failLevelSelectButton.onClick.AddListener(OnLevelSelect);
+            if (homeButton != null) homeButton.onClick.AddListener(OnHome);
+            if (failHomeButton != null) failHomeButton.onClick.AddListener(OnHome);
             if (continueButton != null) continueButton.onClick.AddListener(OnContinue);
         }
 
@@ -73,8 +76,8 @@ namespace ChargeRush.UI
             if (resumeButton != null) resumeButton.onClick.RemoveListener(OnResume);
             if (retryButton != null) retryButton.onClick.RemoveListener(OnRetry);
             if (failRetryButton != null) failRetryButton.onClick.RemoveListener(OnRetry);
-            if (levelSelectButton != null) levelSelectButton.onClick.RemoveListener(OnLevelSelect);
-            if (failLevelSelectButton != null) failLevelSelectButton.onClick.RemoveListener(OnLevelSelect);
+            if (homeButton != null) homeButton.onClick.RemoveListener(OnHome);
+            if (failHomeButton != null) failHomeButton.onClick.RemoveListener(OnHome);
             if (continueButton != null) continueButton.onClick.RemoveListener(OnContinue);
         }
 
@@ -235,16 +238,10 @@ namespace ChargeRush.UI
             }
         }
 
-        private void OnLevelSelect()
+        private void OnHome()
         {
-            if (LevelSession.Instance != null)
-            {
-                LevelSession.Instance.ReturnToLevelSelect();
-            }
-            else
-            {
-                SceneLoader.Instance.Load(SceneLoader.LevelSelectScene);
-            }
+            Time.timeScale = 1f;
+            SceneLoader.Instance.Load(SceneLoader.MainMenuScene);
         }
 
         private void OnContinue()

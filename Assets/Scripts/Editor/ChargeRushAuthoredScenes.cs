@@ -53,6 +53,12 @@ namespace ChargeRush.Editor
 
         public static void DeleteForForceRebuild(string scenePath)
         {
+            if (scenePath == Gameplay)
+            {
+                Debug.Log($"ChargeRush: Preserving manually authored gameplay scene at {Gameplay}.");
+                return;
+            }
+
             if (File.Exists(scenePath))
             {
                 AssetDatabase.DeleteAsset(scenePath);

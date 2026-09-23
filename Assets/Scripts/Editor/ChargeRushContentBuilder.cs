@@ -730,13 +730,13 @@ namespace ChargeRush.Editor
             EditorSceneManager.SaveScene(scene, ChargeRushAuthoredScenes.MainMenu);
         }
 
-        [MenuItem("ChargeRush/Force Rebuild All Scenes")]
+        [MenuItem("ChargeRush/Force Rebuild Generated Scenes")]
         public static void ForceRebuildAllScenes()
         {
             if (!EditorUtility.DisplayDialog(
-                    "Force rebuild all scenes?",
-                    "This will overwrite every scene under Assets/Scenes/ with generated placeholder layouts.\n\nAll hand-authored UI will be lost.",
-                    "Overwrite All",
+                    "Force rebuild generated scenes?",
+                    "This rebuilds generated scenes while preserving the manually authored gameplay scene and its panel UI.",
+                    "Rebuild Generated",
                     "Cancel"))
             {
                 return;
@@ -762,7 +762,7 @@ namespace ChargeRush.Editor
             ConfigureBuildSettings();
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log("ChargeRush: All scenes force-rebuilt.");
+            Debug.Log("ChargeRush: Generated scenes rebuilt; authored gameplay scene preserved.");
         }
 
         private static void BuildLevelSelectScene()
@@ -884,7 +884,7 @@ namespace ChargeRush.Editor
             pausePanel.SetActive(false);
             CreateTMP(pausePanel.transform, "PauseTitle", "Paused", 40, new Vector2(0f, 80f), UiTextRole.Heading);
             var resume = CreateButton(pausePanel.transform, "Resume", "Resume", new Vector2(0f, 0f));
-            var pauseLevels = CreateButton(pausePanel.transform, "PauseLevels", "Level Select", new Vector2(0f, -70f));
+            var pauseHome = CreateButton(pausePanel.transform, "Home", "Home", new Vector2(0f, -70f));
 
             var completePanel = CreatePanel(safe, "CompletePanel", Vector2.zero, new Vector2(520f, 340f));
             completePanel.SetActive(false);
@@ -899,7 +899,7 @@ namespace ChargeRush.Editor
             CreateTMP(failPanel.transform, "FailTitle", "Level Failed", 40, new Vector2(0f, 100f), UiTextRole.Heading);
             var failReason = CreateTMP(failPanel.transform, "FailReason", "", 28, new Vector2(0f, 30f), UiTextRole.Body);
             var failRetry = CreateButton(failPanel.transform, "FailRetry", "Retry", new Vector2(-110f, -90f));
-            var failLevels = CreateButton(failPanel.transform, "FailLevels", "Level Select", new Vector2(110f, -90f));
+            var failHome = CreateButton(failPanel.transform, "Home", "Home", new Vector2(110f, -90f));
 
             var hud = canvas.AddComponent<GameplayHud>();
             var hudSo = new SerializedObject(hud);
@@ -919,8 +919,8 @@ namespace ChargeRush.Editor
             hudSo.FindProperty("resumeButton").objectReferenceValue = resume;
             hudSo.FindProperty("retryButton").objectReferenceValue = replay;
             hudSo.FindProperty("failRetryButton").objectReferenceValue = failRetry;
-            hudSo.FindProperty("levelSelectButton").objectReferenceValue = pauseLevels;
-            hudSo.FindProperty("failLevelSelectButton").objectReferenceValue = failLevels;
+            hudSo.FindProperty("homeButton").objectReferenceValue = pauseHome;
+            hudSo.FindProperty("failHomeButton").objectReferenceValue = failHome;
             hudSo.FindProperty("continueButton").objectReferenceValue = cont;
             hudSo.ApplyModifiedPropertiesWithoutUndo();
 
