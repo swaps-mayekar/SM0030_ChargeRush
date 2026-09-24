@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using ChargeRush.Core;
 using ChargeRush.Data;
 using ChargeRush.Progression;
@@ -121,7 +122,8 @@ namespace ChargeRush.UI
                 return;
             }
 
-            var listRoot = UiScrollList.Ensure(upgradesContent, new Vector2(640f, 280f), new Vector2(0f, 40f));
+            // Keep scene-authored upgradesContent size/position (do not pass viewport overrides).
+            var listRoot = UiScrollList.Ensure(upgradesContent);
             UiScrollList.ClearRows(listRoot);
 
             var upgrades = GameBootstrap.Instance.Catalog.Upgrades;
@@ -133,25 +135,37 @@ namespace ChargeRush.UI
                 manager.SetCatalog(GameBootstrap.Instance.Catalog);
             }
 
+            const float iconSize = 34f;
+            const float iconGap = 8f;
+            var iconLabels = new List<TextMeshProUGUI>();
+            var rowLayouts = new List<LayoutElement>();
+            var columnWidth = 0f;
+
             for (var i = 0; i < upgrades.Count; i++)
             {
                 var upgrade = upgrades[i];
                 var level = SaveManager.Instance != null ? SaveManager.Instance.GetUpgradeLevel(upgrade.UpgradeId) : 0;
                 var cost = level < upgrade.MaxLevel ? upgrade.GetCost(level + 1) : -1;
+                var hasCost = cost > 0;
                 var label = UiScrollList.CreateTextRow(
                     listRoot,
                     $"Upgrade_{upgrade.UpgradeId}",
-                    cost > 0
+                    hasCost
                         ? $"{upgrade.DisplayName} Lv {level}/{upgrade.MaxLevel} - {CreditUi.Format(cost)}"
                         : $"{upgrade.DisplayName} MAX",
                     26f,
                     48f,
-                    UiTextRole.Heading);
+                    UiTextRole.Heading,
+                    hasCost ? iconSize + iconGap : 0f);
                 PanelTheme.ApplyText(label, PanelTheme.BodyColor);
 
-                if (cost > 0)
+                var layoutElement = label.GetComponent<LayoutElement>();
+                rowLayouts.Add(layoutElement);
+                columnWidth = Mathf.Max(columnWidth, layoutElement.preferredWidth);
+
+                if (hasCost)
                 {
-                    CreditUi.EnsureIconAfterText(label, 34f);
+                    iconLabels.Add(label);
                 }
 
                 var button = label.gameObject.AddComponent<Button>();
@@ -164,6 +178,23 @@ namespace ChargeRush.UI
                         BuildUpgradeList();
                     }
                 });
+            }
+
+            // Shared width keeps a left-aligned column centered over the Close button.
+            for (var i = 0; i < rowLayouts.Count; i++)
+            {
+                rowLayouts[i].minWidth = columnWidth;
+                rowLayouts[i].preferredWidth = columnWidth;
+            }
+
+            if (listRoot is RectTransform listRect)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(listRect);
+            }
+
+            for (var i = 0; i < iconLabels.Count; i++)
+            {
+                CreditUi.EnsureIconAfterText(iconLabels[i], iconSize, iconGap);
             }
         }
 

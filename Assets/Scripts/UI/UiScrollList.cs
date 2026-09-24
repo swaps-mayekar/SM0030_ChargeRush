@@ -9,6 +9,8 @@ namespace ChargeRush.UI
     /// </summary>
     public static class UiScrollList
     {
+        /// <param name="viewportSize">When set, overrides the content root size. Omit to keep scene-authored layout.</param>
+        /// <param name="anchoredPosition">When set, overrides the content root position. Omit to keep scene-authored layout.</param>
         public static Transform Ensure(RectTransform contentRoot, Vector2? viewportSize = null, Vector2? anchoredPosition = null)
         {
             if (contentRoot == null)
@@ -19,8 +21,15 @@ namespace ChargeRush.UI
             contentRoot.anchorMin = new Vector2(0.5f, 0.5f);
             contentRoot.anchorMax = new Vector2(0.5f, 0.5f);
             contentRoot.pivot = new Vector2(0.5f, 0.5f);
-            contentRoot.anchoredPosition = anchoredPosition ?? Vector2.zero;
-            contentRoot.sizeDelta = viewportSize ?? new Vector2(900f, 380f);
+            if (anchoredPosition.HasValue)
+            {
+                contentRoot.anchoredPosition = anchoredPosition.Value;
+            }
+
+            if (viewportSize.HasValue)
+            {
+                contentRoot.sizeDelta = viewportSize.Value;
+            }
 
             var list = contentRoot.Find("List") as RectTransform;
             if (list == null)
@@ -49,7 +58,7 @@ namespace ChargeRush.UI
             layout.childAlignment = TextAnchor.UpperCenter;
             layout.childControlWidth = true;
             layout.childControlHeight = true;
-            layout.childForceExpandWidth = true;
+            layout.childForceExpandWidth = false;
             layout.childForceExpandHeight = false;
 
             var fitter = list.GetComponent<ContentSizeFitter>();
@@ -101,25 +110,30 @@ namespace ChargeRush.UI
             string text,
             float fontSize,
             float height,
-            UiTextRole role = UiTextRole.Body)
+            UiTextRole role = UiTextRole.Body,
+            float trailingIconReserve = 0f)
         {
             var row = new GameObject(name, typeof(RectTransform), typeof(LayoutElement), typeof(TextMeshProUGUI));
             row.transform.SetParent(listRoot, false);
-
-            var layoutElement = row.GetComponent<LayoutElement>();
-            layoutElement.minHeight = height;
-            layoutElement.preferredHeight = height;
-            layoutElement.flexibleWidth = 1f;
 
             var label = row.GetComponent<TextMeshProUGUI>();
             label.fontSize = fontSize;
             label.text = text;
             label.color = Color.white;
-            label.alignment = TextAlignmentOptions.Center;
-            label.enableWordWrapping = true;
-            label.overflowMode = TextOverflowModes.Ellipsis;
+            label.alignment = TextAlignmentOptions.Left;
+            label.enableWordWrapping = false;
+            label.overflowMode = TextOverflowModes.Overflow;
             label.raycastTarget = true;
             UiFonts.Apply(label, role);
+
+            var preferred = label.GetPreferredValues(text);
+            var layoutElement = row.GetComponent<LayoutElement>();
+            layoutElement.minHeight = height;
+            layoutElement.preferredHeight = height;
+            layoutElement.flexibleWidth = 0f;
+            layoutElement.minWidth = preferred.x + trailingIconReserve;
+            layoutElement.preferredWidth = preferred.x + trailingIconReserve;
+
             return label;
         }
     }

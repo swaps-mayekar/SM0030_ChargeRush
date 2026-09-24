@@ -39,6 +39,7 @@ namespace ChargeRush.UI
 
         /// <summary>
         /// Places a coin just to the right of the rendered glyphs (works for left/center/right alignment).
+        /// Call after layout has sized the label so character bounds are valid.
         /// </summary>
         public static void EnsureIconAfterText(TMP_Text text, float size = 44f, float gap = 8f)
         {
@@ -49,31 +50,57 @@ namespace ChargeRush.UI
             }
 
             text.ForceMeshUpdate();
-            var preferred = text.GetPreferredValues(text.text);
-            var width = Mathf.Min(preferred.x, text.rectTransform.rect.width);
 
             icon.anchorMin = new Vector2(0.5f, 0.5f);
             icon.anchorMax = new Vector2(0.5f, 0.5f);
             icon.pivot = new Vector2(0f, 0.5f);
             icon.sizeDelta = new Vector2(size, size);
 
-            // Offset from the text rect center toward the right edge of the glyph run.
-            var alignment = text.horizontalAlignment;
-            float textCenterOffset;
-            if (alignment == HorizontalAlignmentOptions.Right)
+            var maxX = GetRenderedTextMaxX(text);
+            if (float.IsNegativeInfinity(maxX))
             {
-                textCenterOffset = text.rectTransform.rect.width * 0.5f - width * 0.5f;
-            }
-            else if (alignment == HorizontalAlignmentOptions.Left)
-            {
-                textCenterOffset = -text.rectTransform.rect.width * 0.5f + width * 0.5f;
-            }
-            else
-            {
-                textCenterOffset = 0f;
+                var preferred = text.GetPreferredValues(text.text);
+                var width = preferred.x;
+                var rectWidth = text.rectTransform.rect.width;
+                var alignment = text.horizontalAlignment;
+                if (alignment == HorizontalAlignmentOptions.Right)
+                {
+                    maxX = rectWidth * 0.5f;
+                }
+                else if (alignment == HorizontalAlignmentOptions.Left)
+                {
+                    maxX = -rectWidth * 0.5f + width;
+                }
+                else
+                {
+                    maxX = width * 0.5f;
+                }
             }
 
-            icon.anchoredPosition = new Vector2(textCenterOffset + width * 0.5f + gap, 0f);
+            icon.anchoredPosition = new Vector2(maxX + gap, 0f);
+        }
+
+        private static float GetRenderedTextMaxX(TMP_Text text)
+        {
+            var maxX = float.NegativeInfinity;
+            var textInfo = text.textInfo;
+            if (textInfo == null)
+            {
+                return maxX;
+            }
+
+            for (var i = 0; i < textInfo.characterCount; i++)
+            {
+                var ch = textInfo.characterInfo[i];
+                if (!ch.isVisible)
+                {
+                    continue;
+                }
+
+                maxX = Mathf.Max(maxX, ch.topRight.x, ch.bottomRight.x);
+            }
+
+            return maxX;
         }
 
         /// <summary>Places a coin on the trailing edge inside a right-aligned currency label.</summary>
