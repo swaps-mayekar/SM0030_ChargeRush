@@ -27,8 +27,8 @@ namespace ChargeRush.UI
         {
             Refresh();
             if (playButton != null) playButton.onClick.AddListener(OnPlay);
-            if (levelSelectButton != null) levelSelectButton.onClick.AddListener(() => SceneLoader.Instance.Load(SceneLoader.LevelSelectScene));
-            if (challengeButton != null) challengeButton.onClick.AddListener(OnChallenge);
+            if (levelSelectButton != null) levelSelectButton.onClick.AddListener(OnLevelSelect);
+            if (challengeButton != null) challengeButton.onClick.AddListener(OnChallengeSelect);
             if (endlessButton != null) endlessButton.onClick.AddListener(OnEndless);
             if (achievementsButton != null) achievementsButton.onClick.AddListener(() => SceneLoader.Instance.Load(SceneLoader.AchievementsScene));
             if (upgradesButton != null) upgradesButton.onClick.AddListener(OpenUpgrades);
@@ -81,16 +81,20 @@ namespace ChargeRush.UI
             GameBootstrap.Instance.PlayStoryLevel(next);
         }
 
-        private void OnChallenge()
+        private void OnLevelSelect()
         {
-            var catalog = GameBootstrap.Instance != null ? GameBootstrap.Instance.Catalog : null;
-            if (catalog == null || catalog.Challenges.Count == 0)
+            if (GameBootstrap.Instance != null)
             {
-                return;
+                GameBootstrap.Instance.OpenLevelSelect();
             }
+        }
 
-            // First completed story level challenge, else first challenge.
-            GameBootstrap.Instance.PlayChallenge(catalog.Challenges[0]);
+        private void OnChallengeSelect()
+        {
+            if (GameBootstrap.Instance != null)
+            {
+                GameBootstrap.Instance.OpenChallengeSelect();
+            }
         }
 
         private void OnEndless()
@@ -197,6 +201,5 @@ namespace ChargeRush.UI
                 CreditUi.EnsureIconAfterText(iconLabels[i], iconSize, iconGap);
             }
         }
-
     }
 }
