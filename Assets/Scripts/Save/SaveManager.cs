@@ -1,7 +1,9 @@
 using System;
 using System.IO;
-using UnityEngine;
 using ChargeRush.Core;
+using ChargeRush.Data;
+using ChargeRush.Progression;
+using UnityEngine;
 
 namespace ChargeRush.Save
 {
@@ -170,6 +172,90 @@ namespace ChargeRush.Save
 
             Data.UnlockedAchievements.Add(achievementId);
             GameEvents.RaiseAchievementUnlocked(achievementId);
+        }
+
+        /// <summary>Fully unlocks story, challenges, and achievements for marketing screenshots.</summary>
+        public void UnlockAllForScreenshots(GameCatalog catalog)
+        {
+            ApplyScreenshotUnlock(Data, catalog, createLevel: GetOrCreateLevel);
+            CareerProgression.RefreshFromSave();
+            Save();
+        }
+
+        public static SaveData BuildScreenshotSave(GameCatalog catalog)
+        {
+            var data = CreateDefault();
+            ApplyScreenshotUnlock(data, catalog, levelId =>
+            {
+                var record = new LevelProgressRecord { LevelId = levelId };
+                data.Levels.Add(record);
+                return record;
+            });
+            data.CareerRank = CareerProgression.ToDisplay(
+                CareerProgression.EvaluateRank(data.StoryLevelsCompleted));
+            return data;
+        }
+
+        private static void ApplyScreenshotUnlock(
+            SaveData data,
+            GameCatalog catalog,
+            System.Func<string, LevelProgressRecord> createLevel)
+        {
+            if (data == null || catalog == null || createLevel == null)
+            {
+                return;
+            }
+
+            data.TutorialCompleted = true;
+            data.ReplayTutorialOnNextLevelOne = false;
+            data.StoryLevelsCompleted = catalog.StoryLevels.Count;
+            data.ThreeStarLevels = catalog.StoryLevels.Count;
+            data.PerfectLevels = Mathf.Max(data.PerfectLevels, catalog.StoryLevels.Count);
+            data.TotalCredits = Mathf.Max(data.TotalCredits, 50000);
+            data.LifetimeEarnings = Mathf.Max(data.LifetimeEarnings, 100000);
+            data.CustomersServed = Mathf.Max(data.CustomersServed, 100);
+            data.DevicesCharged = Mathf.Max(data.DevicesCharged, 100);
+            data.BestStreak = Mathf.Max(data.BestStreak, 10);
+
+            for (var i = 0; i < catalog.StoryLevels.Count; i++)
+            {
+                var level = catalog.StoryLevels[i];
+                if (level == null)
+                {
+                    continue;
+                }
+
+                var record = createLevel(level.LevelId);
+                record.Completed = true;
+                record.Stars = 3;
+                record.BestEarnings = Mathf.Max(record.BestEarnings, level.ThreeStarThreshold);
+            }
+
+            data.CompletedChallenges.Clear();
+            for (var i = 0; i < catalog.Challenges.Count; i++)
+            {
+                var challenge = catalog.Challenges[i];
+                if (challenge != null && !string.IsNullOrEmpty(challenge.ChallengeId))
+                {
+                    data.CompletedChallenges.Add(challenge.ChallengeId);
+                }
+            }
+
+            data.UnlockedAchievements.Clear();
+            for (var i = 0; i < catalog.Achievements.Count; i++)
+            {
+                var achievement = catalog.Achievements[i];
+                if (achievement != null && !string.IsNullOrEmpty(achievement.AchievementId))
+                {
+                    data.UnlockedAchievements.Add(achievement.AchievementId);
+                }
+            }
+
+            data.ChargedDeviceCategories.Clear();
+            foreach (DeviceCategory category in Enum.GetValues(typeof(DeviceCategory)))
+            {
+                data.ChargedDeviceCategories.Add(category.ToString());
+            }
         }
 
         public static SaveData CreateDefault()
